@@ -44,5 +44,6 @@ public:
     std::vector<HalfEdge*> edges;
     DCEL();
     DCEL(std::vector<std::pair<double, double>>&);
+    void split(Vertex*, Vertex*);
 };
 
