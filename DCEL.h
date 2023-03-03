@@ -1,9 +1,15 @@
 #include <vector>
 
+class Face;
+class HalfEdge;
+class Vertex;
+class DCEL;
+class Rectangle;
+
 // Edge is any edge of face in clockwise order
 class Face {
 public:
-    HalfEdge* edge = NULL;    
+    HalfEdge* edge = NULL;
     Face();
     Face(HalfEdge*);
     std::vector<Vertex*> enumerate_all_vertices();
@@ -20,7 +26,7 @@ class HalfEdge {
 public:
     Vertex* org = NULL;
     Face* face = NULL;
-    HalfEdge *twin = NULL, *nxt = NULL, *prev = NULL;
+    HalfEdge* twin = NULL, * nxt = NULL, * prev = NULL;
     HalfEdge();
     HalfEdge(Vertex*, Vertex*);
     HalfEdge(HalfEdge*, Vertex*);
@@ -43,8 +49,17 @@ class DCEL {
 public:
     std::vector<HalfEdge*> edges;
     std::vector<Vertex*> corr;
+    std::vector<Face*> faces;
     DCEL();
     DCEL(std::vector<std::pair<double, double>>&);
     void split(Vertex*, Vertex*);
+    void print();
+};
+
+class Rectangle {
+public:
+    double lx, ly, ux, uy;
+    Rectangle();
+    Rectangle(double, double, double, double);
 };
 

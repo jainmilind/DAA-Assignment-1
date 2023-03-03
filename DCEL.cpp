@@ -1,4 +1,5 @@
 #include <vector>
+#include <iostream>
 #include <cassert>
 #include "DCEL.h"
 
@@ -6,6 +7,14 @@ Face::Face() {}
 HalfEdge::HalfEdge() {}
 Vertex::Vertex() {}
 DCEL::DCEL() {}
+Rectangle::Rectangle() {}
+
+Rectangle::Rectangle(double lx, double ly, double ux, double uy) {
+    this->lx = lx;
+    this->ly = ly;
+    this->ux = ux;
+    this->uy = uy;
+}
 
 std::vector<Vertex*> Face::enumerate_all_vertices() {
     std::vector<Vertex*> vertices;
@@ -99,35 +108,70 @@ DCEL::DCEL(std::vector<std::pair<double, double>>& a) {
     }
 
     this->edges.push_back(new HalfEdge(this->edges.back(), this->edges[0]));
+    this->faces.push_back(this->edges.back()->face);
 }
 
 void DCEL::split(Vertex* v1, Vertex* v2) {
+    if (v1->leave->twin->org == v2 or v2->leave->twin->org == v1) 
+        return;
+
     HalfEdge* e1 = v1->leave;
     HalfEdge* e2 = v2->leave->twin->nxt->twin;
-    HalfEdge* e3 = v1->leave;
+    HalfEdge* e3 = v2->leave;
     HalfEdge* e4 = e1->twin->nxt->twin;
-
+    using namespace std;
+    cout << "HI1" << endl;
     HalfEdge* e = new HalfEdge();
     e->org = v2;
     e->twin = new HalfEdge();
     e->twin->org = v1;
+    e->twin->twin = e;
+    v1->leave = e->twin;
+    
+    cout << "HI2" << endl;
+    cout<<e<< e1<< e2<<e3<< e4; cout << endl;
 
-    e2->nxt = e;
-    e->prev = e2;
-    e1->prev = e;
-    e->nxt = e1;
+    e2->nxt = e; e->prev = e2; 
+    e2->twin->prev = e->twin; //
+    cout << "HI21" << endl;
+    e1->prev = e; e->nxt = e1; 
+    e1->twin->nxt = e->twin; //
+    cout << "HI22" << endl;
 
-    e->twin->nxt = e3;
-    e->twin->prev = e4;
-    e3->prev = e->twin;
-    e4->nxt = e->twin;
+    e->twin->nxt = e3; e3->prev = e->twin;
+    e3->twin->nxt = e; //
+    cout << "HI23" << endl;
+
+    e->twin->prev = e4; e4->nxt = e->twin;
+    cout << "HI231" << endl;
+    cout << e4 << endl;
+    cout << e4->twin << endl;
+    cout << e4->twin->prev << endl;
+    e4->twin->prev = e; //
+    cout << "HI3" << endl;
 
     e->face = e1->face;
+    // ! added now :skull:
+    e->face->edge = e1;
+    cout << "HI4" << endl;
 
     Face* new_face = new Face(e->twin);
     HalfEdge* temp = e->twin;
     do {
+        // cout << temp->org->x << ' ' << temp->org->y << endl;
         temp->face = new_face;
         temp = temp->nxt;
     } while (temp != e->twin);
+    cout << "HI5" << endl;
+
+    this->faces.push_back(new_face);
+}
+
+void DCEL::print() {
+    for (Face* f : this->faces) {
+        std::cout << "\nNew face starting\n";
+        for (Vertex* v : f->enumerate_all_vertices()) {
+            std::cout << v->x << ' ' << v->y << std::endl;
+        }
+    }
 }
