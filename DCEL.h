@@ -42,6 +42,7 @@ public:
 class DCEL {
 public:
     std::vector<HalfEdge*> edges;
+    std::vector<Vertex*> corr;
     DCEL();
     DCEL(std::vector<std::pair<double, double>>&);
     void split(Vertex*, Vertex*);

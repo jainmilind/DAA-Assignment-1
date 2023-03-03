@@ -1,4 +1,5 @@
 #include <vector>
+#include <cassert>
 #include "DCEL.h"
 
 Face::Face() {}
@@ -84,12 +85,16 @@ DCEL::DCEL(std::vector<std::pair<double, double>>& a) {
     int n = a.size();
     assert(n > 2 && "Please Enter Valid Polygon ;-;");
 
+    this->corr.resize(n);
     Vertex* v1 = new Vertex(a[0].first, a[0].second);
     Vertex* v2 = new Vertex(a[1].first, a[1].second);
+    this->corr[0] = v1;
+    this->corr[1] = v2;
     this->edges.push_back(new HalfEdge(v1, v2));
 
     for (int i = 2; i < n; ++i) {
         Vertex* v = new Vertex(a[i].first, a[i].second);
+        this->corr[i] = v;
         this->edges.push_back(new HalfEdge(this->edges.back(), v));
     }
 
@@ -100,7 +105,7 @@ void DCEL::split(Vertex* v1, Vertex* v2) {
     HalfEdge* e1 = v1->leave;
     HalfEdge* e2 = v2->leave->twin->nxt->twin;
     HalfEdge* e3 = v1->leave;
-    HalfEdge* e4 = e1->twin->next->twin;
+    HalfEdge* e4 = e1->twin->nxt->twin;
 
     HalfEdge* e = new HalfEdge();
     e->org = v2;
