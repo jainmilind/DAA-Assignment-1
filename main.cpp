@@ -91,7 +91,7 @@ void decomopse(DCEL& polygon, std::set<Vertex*> p, std::set<Vertex*> notches) {
     int m = 1;
     int n = polygon.corr.size();
 
-    while (p.size() > 3) {
+    while (n > 3) {
         std::vector<Vertex*> v(n + 1);
         v[1] = l[m - 1].back();
         v[2] = v[1]->leave->nxt->org;
@@ -113,7 +113,7 @@ void decomopse(DCEL& polygon, std::set<Vertex*> p, std::set<Vertex*> notches) {
         dbg(v); cout << endl;
         dbg(l[m]); cout << endl;
         dbg(p); cout << endl;
-        if (l[m].size() != p.size()) {
+        if (l[m].size() != n) {
             dbg(notches); cout << endl;
             std::set<Vertex*> temp = notches;
             dbg(temp); cout << endl;
@@ -162,14 +162,16 @@ void decomopse(DCEL& polygon, std::set<Vertex*> p, std::set<Vertex*> notches) {
         if (l[m].back() != v[2]) {
             // ! l[m] is convex polygon congrats
             dbg(l[m]); cout << endl;
-            for (Vertex* x : l[m]) p.erase(x);
-            p.insert(l[m][0]);
-            p.insert(l[m].back());
-            dbg(l[m][0]->x, l[m][0]->y);
-            dbg(l[m].back()->x, l[m].back()->y);
-            dbg(p); cout << endl;
-            polygon.split(l[m][0], l[m].back());
-            dbg(p); cout << endl;
+            // for (Vertex* x : l[m]) p.erase(x);
+            // p.insert(l[m][0]);
+            // p.insert(l[m].back());
+            // dbg(l[m][0]->x, l[m][0]->y);
+            // dbg(l[m].back()->x, l[m].back()->y);
+            // dbg(p); cout << endl;
+            if (l[m].size() != n)
+                polygon.split(l[m][0], l[m].back());
+            else break;
+            // dbg(p); cout << endl;
             n = n - l[m].size() + 2;
         }
 
