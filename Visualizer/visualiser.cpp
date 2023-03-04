@@ -3,7 +3,7 @@
 using namespace std;
 typedef uintptr_t usize;
 const int off_set = 100;
-const int scale = 100;
+const int scale = 1;
 int main() {
     usize n;
     cin >> n;

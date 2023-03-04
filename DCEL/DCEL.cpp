@@ -154,7 +154,7 @@ void DCEL::split(Vertex* v1, Vertex* v2) {
 }
 
 void DCEL::print() {
-    std::cout << "STARTING FACE PRINTING" << std::endl;
+    // std::cout << "STARTING FACE PRINTING" << std::endl;
     std::cout << this->faces.size() << std::endl;
     for (Face* f : this->faces) {
         auto ans = f->enumerate_all_vertices();

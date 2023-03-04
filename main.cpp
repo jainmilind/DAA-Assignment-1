@@ -71,11 +71,22 @@ bool onSameSide(Vertex* v1, Vertex* v, Vertex* vr, Vertex* vi) {
     return false;
 }
 
-// std::set<Vertex*> get_notches(Face* face) {
+std::set<Vertex*> get_notches(Face* face) {
+    std::vector<Vertex*> vertices = face->enumerate_all_vertices();
+    std::set<Vertex*> notches;
 
-// }
+    int n = vertices.size();
+    for (int i = 0; i < n; ++i) {
+        int pre = (i - 1 + n) % n;
+        int nxt = (i + 1) % n;
+        if (angle(vertices[pre], vertices[i], vertices[nxt]) >= 180)
+            notches.insert(vertices[i]);
+    }
 
-void decomopse(DCEL& polygon, std::set<Vertex*> notches) {
+    return notches;
+}
+
+void decomopse_mp1(DCEL& polygon) {
     std::vector<std::vector<Vertex*>> l(1);
     l[0] = { polygon.corr[0] };
     int m = 1;
@@ -85,7 +96,7 @@ void decomopse(DCEL& polygon, std::set<Vertex*> notches) {
         std::vector<Vertex*> v(n + 1);
         v[1] = l[m - 1].back();
         v[2] = v[1]->leave->nxt->org;
-        l.push_back(std::vector<Vertex*>());
+        l.push_back({});
         l.back() = { v[1], v[2] };
         int i = 2;
         v[3] = v[2]->leave->nxt->org;
@@ -105,13 +116,16 @@ void decomopse(DCEL& polygon, std::set<Vertex*> notches) {
         // dbg(p); cout << endl;
         if (l[m].size() != n) {
             // dbg(notches); cout << endl;
-            std::set<Vertex*> temp = notches;
+            std::set<Vertex*> temp = get_notches(l[m][0]->leave->face);
             // dbg(temp); cout << endl;
+            // std::cerr << temp.size() << std::endl;
             for (Vertex* now : l[m])
-                if (temp.count(l[m][i]))
-                    temp.erase(l[m][i]);
+                if (temp.count(now))
+                    temp.erase(now);
 
-            // cout << temp << endl;
+            // for (auto now : temp)
+            //     std::cerr << now << ' ';
+            // std::cerr << std::endl;
             std::deque<Vertex*> lpvs(temp.begin(), temp.end());
             // dbg(lpvs); cout << endl;
             while (lpvs.size() > 0) {
@@ -140,7 +154,7 @@ void decomopse(DCEL& polygon, std::set<Vertex*> notches) {
                                 new_l.push_back(i);
                             }
                             // dbg(new_l); cout << endl;
-                            l[m].swap(new_l);
+                            l[m] = new_l;
                             backward = true;
                         }
                         lpvs.pop_front();
@@ -171,6 +185,7 @@ void decomopse(DCEL& polygon, std::set<Vertex*> notches) {
         // cout << endl;
         m++;
     }
+    std::cout<<"HI\n"<<std::endl;;;;
 }
 
 int main() {
@@ -180,17 +195,7 @@ int main() {
         std::cin >> x.first >> x.second;
 
     DCEL polygon = DCEL(a);
-    std::set<Vertex*> notches;
-    std::set<Vertex*> p;
 
-    for (int i = 0; i < n; ++i) {
-        p.insert(polygon.corr[i]);
-        int pre = (i - 1 + n) % n;
-        int nxt = (i + 1) % n;
-        if (angle(polygon.corr[pre], polygon.corr[i], polygon.corr[nxt]) >= 180)
-            notches.insert(polygon.corr[i]);
-    }
-
-    decomopse(polygon, notches);
+    decomopse_mp1(polygon);
     polygon.print();
 }
