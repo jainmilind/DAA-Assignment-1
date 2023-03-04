@@ -5,15 +5,9 @@
 #include <iostream>
 #include <math.h>   
 #include <array>
-#include "DCEL.cpp"
+#include "DCEL/DCEL.cpp"
 
 // !remove in end (for debugging only)
-using namespace std;
-template <typename A, typename B> ostream& operator<<(ostream& os, const pair<A, B>& p) { return os << "(" << p.first << ", " << p.second << ")"; }
-template <typename T_container, typename T = typename enable_if < !is_same<T_container, string>::value, typename T_container::value_type >::type > ostream& operator<<(ostream& os, const T_container& v) { os << '{'; string sep; for (const T& x : v) os << sep << x, sep = ", "; return os << '}'; }
-template <typename T> void debug_out(string s, T t) { cout << "[" << s << ": " << t << "]\n"; }
-template <typename T, typename... U> void debug_out(string s, T t, U... u) { int w = 0, c = 0; while (w < (int)s.size()) { if (s[w] == '(') c++; if (s[w] == ')') c--; if (!c and s[w] == ',') break; w++; } cout << "[" << s.substr(0, w) << ": " << t << "] "; debug_out(s.substr(w + 2, (int)s.size() - w - 1), u...); }
-#define dbg(x...) debug_out(#x, x)
 
 // measures angle in anticlockwise direction with pivot at b (degrees)
 double angle(Vertex* a, Vertex* b, Vertex* c) {
@@ -68,24 +62,20 @@ std::array<double, 3> findLine(Vertex* v1, Vertex* v2) {
     return { a, b, c };
 }
 
-bool onSameSide(Vertex* v1, Vertex* v, Vertex* vr, Vertex* vi)
-{
-    double fx1; // Variable to store a * x1 + b * y1 - c
-    double fx2; // Variable to store a * x2 + b * y2 - c
-
-    array<double, 3> coeff = findLine(v1, v);
-
-    fx1 = coeff[0] * vr->x + coeff[1] * vr->y - coeff[2];
-    fx2 = coeff[0] * vi->x + coeff[1] * vi->y - coeff[2];
-
-    // If fx1 and fx2 have same sign
+bool onSameSide(Vertex* v1, Vertex* v, Vertex* vr, Vertex* vi) {
+    std::array<double, 3> coeff = findLine(v1, v);
+    double fx1 = coeff[0] * vr->x + coeff[1] * vr->y - coeff[2];
+    double fx2 = coeff[0] * vi->x + coeff[1] * vi->y - coeff[2];
     if ((fx1 * fx2) > 0)
         return true;
-
     return false;
 }
 
-void decomopse(DCEL& polygon, std::set<Vertex*> p, std::set<Vertex*> notches) {
+// std::set<Vertex*> get_notches(Face* face) {
+
+// }
+
+void decomopse(DCEL& polygon, std::set<Vertex*> notches) {
     std::vector<std::vector<Vertex*>> l(1);
     l[0] = { polygon.corr[0] };
     int m = 1;
@@ -109,33 +99,33 @@ void decomopse(DCEL& polygon, std::set<Vertex*> p, std::set<Vertex*> notches) {
             i++;
             v[i + 1] = v[i]->leave->nxt->org;
         }
-        cout << "HOI" << m << endl;
-        dbg(v); cout << endl;
-        dbg(l[m]); cout << endl;
-        dbg(p); cout << endl;
+        // cout << "HOI" << m << endl;
+        // dbg(v); cout << endl;
+        // dbg(l[m]); cout << endl;
+        // dbg(p); cout << endl;
         if (l[m].size() != n) {
-            dbg(notches); cout << endl;
+            // dbg(notches); cout << endl;
             std::set<Vertex*> temp = notches;
-            dbg(temp); cout << endl;
+            // dbg(temp); cout << endl;
             for (Vertex* now : l[m])
-                if (temp.count(now))
-                    temp.erase(now);
+                if (temp.count(l[m][i]))
+                    temp.erase(l[m][i]);
 
-            cout << temp << endl;
+            // cout << temp << endl;
             std::deque<Vertex*> lpvs(temp.begin(), temp.end());
-            dbg(lpvs); cout << endl;
+            // dbg(lpvs); cout << endl;
             while (lpvs.size() > 0) {
                 auto rectangle = get_rectangle(l[m]);
                 bool backward = false;
                 while (!backward and lpvs.size() > 0) {
-                    dbg(lpvs, backward); cout << endl;
+                    // dbg(lpvs, backward); cout << endl;
                     while (lpvs.size() > 0 and !is_inside_rectangle(rectangle, lpvs[0])) {
                         lpvs.pop_front();
                     }
-                    dbg(lpvs); cout << endl;
+                    // dbg(lpvs); cout << endl;
                     if (lpvs.size() > 0) {
                         Vertex* V = lpvs[0];
-                        dbg(V); cout << endl;
+                        // dbg(V); cout << endl;
                         if (is_inside_polygon(l[m], V)) {
                             std::set<Vertex*> vtr;
                             for (int x = 2; x < l[m].size(); ++x) {
@@ -143,17 +133,17 @@ void decomopse(DCEL& polygon, std::set<Vertex*> p, std::set<Vertex*> notches) {
                                     // if (angle(l[m][x], V, l[m][0]) > 180)
                                     vtr.insert(l[m][x]);
                             }
-                            dbg(vtr); cout << endl;
+                            // dbg(vtr); cout << endl;
                             std::vector<Vertex*> new_l;
                             for (Vertex* i : l[m]) {
                                 if (vtr.count(i)) continue;
                                 new_l.push_back(i);
                             }
-                            dbg(new_l); cout << endl;
+                            // dbg(new_l); cout << endl;
                             l[m].swap(new_l);
                             backward = true;
-                            lpvs.pop_front();
                         }
+                        lpvs.pop_front();
                     }
                 }
             }
@@ -161,7 +151,7 @@ void decomopse(DCEL& polygon, std::set<Vertex*> p, std::set<Vertex*> notches) {
 
         if (l[m].back() != v[2]) {
             // ! l[m] is convex polygon congrats
-            dbg(l[m]); cout << endl;
+            // dbg(l[m]); cout << endl;
             // for (Vertex* x : l[m]) p.erase(x);
             // p.insert(l[m][0]);
             // p.insert(l[m].back());
@@ -175,10 +165,10 @@ void decomopse(DCEL& polygon, std::set<Vertex*> p, std::set<Vertex*> notches) {
             n = n - l[m].size() + 2;
         }
 
-        dbg(m);
-        dbg(polygon.faces.size());
-        polygon.print();
-        cout << endl;
+        // dbg(m);
+        // dbg(polygon.faces.size());
+        // polygon.print();
+        // cout << endl;
         m++;
     }
 }
@@ -201,6 +191,6 @@ int main() {
             notches.insert(polygon.corr[i]);
     }
 
-    decomopse(polygon, p, notches);
+    decomopse(polygon, notches);
     polygon.print();
 }
