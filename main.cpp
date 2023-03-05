@@ -8,6 +8,12 @@
 #include "DCEL/DCEL.cpp"
 
 // !remove in end (for debugging only)
+using namespace std;
+template <typename A, typename B> ostream& operator<<(ostream& os, const pair<A, B>& p) { return os << "(" << p.first << ", " << p.second << ")"; }
+template <typename T_container, typename T = typename enable_if < !is_same<T_container, string>::value, typename T_container::value_type >::type > ostream& operator<<(ostream& os, const T_container& v) { os << '{'; string sep; for (const T& x : v) os << sep << x, sep = ", "; return os << '}'; }
+template <typename T> void debug_out(string s, T t) { cout << "[" << s << ": " << t << "]\n"; }
+template <typename T, typename... U> void debug_out(string s, T t, U... u) { int w = 0, c = 0; while (w < (int)s.size()) { if (s[w] == '(') c++; if (s[w] == ')') c--; if (!c and s[w] == ',') break; w++; } cout << "[" << s.substr(0, w) << ": " << t << "] "; debug_out(s.substr(w + 2, (int)s.size() - w - 1), u...); }
+#define dbg(x...) debug_out(#x, x)
 
 // measures angle in anticlockwise direction with pivot at b (degrees)
 double angle(Vertex* a, Vertex* b, Vertex* c) {
@@ -87,13 +93,13 @@ std::set<Vertex*> get_notches(Face* face) {
 }
 
 void decomopse_mp1(DCEL& polygon) {
-    std::vector<std::vector<Vertex*>> l(1);
-    l[0] = { polygon.corr[0] };
+    std::vector<std::vector<Vertex*>> l;
+    l.push_back({ polygon.corr[0] });
     int m = 1;
     int n = polygon.corr.size();
 
     while (n > 3) {
-        std::vector<Vertex*> v(n + 1);
+        std::vector<Vertex*> v(n + 2);
         v[1] = l[m - 1].back();
         v[2] = v[1]->leave->nxt->org;
         l.push_back({});
@@ -110,14 +116,12 @@ void decomopse_mp1(DCEL& polygon) {
             i++;
             v[i + 1] = v[i]->leave->nxt->org;
         }
-        // cout << "HOI" << m << endl;
-        // dbg(v); cout << endl;
-        // dbg(l[m]); cout << endl;
-        // dbg(p); cout << endl;
+        cout << "HOI" << m << endl;
+        dbg(v); cout << endl;
+        dbg(l[m]); cout << endl;
         if (l[m].size() != n) {
-            // dbg(notches); cout << endl;
             std::set<Vertex*> temp = get_notches(l[m][0]->leave->face);
-            // dbg(temp); cout << endl;
+            dbg(temp); cout << endl;
             // std::cerr << temp.size() << std::endl;
             for (Vertex* now : l[m])
                 if (temp.count(now))
@@ -132,11 +136,11 @@ void decomopse_mp1(DCEL& polygon) {
                 auto rectangle = get_rectangle(l[m]);
                 bool backward = false;
                 while (!backward and lpvs.size() > 0) {
-                    // dbg(lpvs, backward); cout << endl;
+                    dbg(lpvs, backward); cout << endl;
                     while (lpvs.size() > 0 and !is_inside_rectangle(rectangle, lpvs[0])) {
                         lpvs.pop_front();
                     }
-                    // dbg(lpvs); cout << endl;
+                    dbg(lpvs); cout << endl;
                     if (lpvs.size() > 0) {
                         Vertex* V = lpvs[0];
                         // dbg(V); cout << endl;
@@ -144,16 +148,15 @@ void decomopse_mp1(DCEL& polygon) {
                             std::set<Vertex*> vtr;
                             for (int x = 2; x < l[m].size(); ++x) {
                                 if (onSameSide(l[m][0], V, l[m].back(), l[m][x]))
-                                    // if (angle(l[m][x], V, l[m][0]) > 180)
                                     vtr.insert(l[m][x]);
                             }
-                            // dbg(vtr); cout << endl;
+                            dbg(vtr); cout << endl;
                             std::vector<Vertex*> new_l;
                             for (Vertex* i : l[m]) {
                                 if (vtr.count(i)) continue;
                                 new_l.push_back(i);
                             }
-                            // dbg(new_l); cout << endl;
+                            dbg(new_l); cout << endl;
                             l[m] = new_l;
                             backward = true;
                         }
@@ -165,12 +168,12 @@ void decomopse_mp1(DCEL& polygon) {
 
         if (l[m].back() != v[2]) {
             // ! l[m] is convex polygon congrats
-            // dbg(l[m]); cout << endl;
+            dbg(l[m]); cout << endl;
             // for (Vertex* x : l[m]) p.erase(x);
             // p.insert(l[m][0]);
             // p.insert(l[m].back());
-            // dbg(l[m][0]->x, l[m][0]->y);
-            // dbg(l[m].back()->x, l[m].back()->y);
+            dbg(l[m][0]->x, l[m][0]->y);
+            dbg(l[m].back()->x, l[m].back()->y);
             // dbg(p); cout << endl;
             if (l[m].size() != n)
                 polygon.split(l[m][0], l[m].back());
@@ -179,13 +182,16 @@ void decomopse_mp1(DCEL& polygon) {
             n = n - l[m].size() + 2;
         }
 
-        // dbg(m);
-        // dbg(polygon.faces.size());
-        // polygon.print();
-        // cout << endl;
+        dbg(m);
+        dbg(polygon.faces.size());
+        polygon.print();
+        cout << endl;
         m++;
     }
-    std::cout<<"HI\n"<<std::endl;;;;
+    // std::cout<<"HI\n"<<std::endl;;;;
+    // for (auto &v : l)
+    //     v.clear();
+    // l.clear();
 }
 
 int main() {
