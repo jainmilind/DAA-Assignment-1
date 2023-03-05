@@ -1,9 +1,10 @@
 <svg height='210' width='500'>
-<polygon points='99.000000,96.000000 101.000000,98.000000 102.000000,99.000000 103.000000,101.000000 ' style='fill:indigo;stroke:black;stroke-width:0.1' />
-<polygon points='99.000000,96.000000 101.000000,103.000000 98.000000,102.000000 97.000000,99.000000 98.000000,97.000000 ' style='fill:yellow;stroke:black;stroke-width:0.1' />
-<polygon points='103.000000,97.000000 99.000000,96.000000 102.000000,95.000000 105.000000,96.000000 ' style='fill:blue;stroke:black;stroke-width:0.1' />
+<polygon points='101.000000,98.000000 98.000000,102.000000 102.000000,95.000000 ' style='fill:indigo;stroke:black;stroke-width:0.1' />
+<polygon points='102.000000,95.000000 98.000000,102.000000 97.000000,99.000000 98.000000,97.000000 99.000000,96.000000 ' style='fill:yellow;stroke:black;stroke-width:0.1' />
+<polygon points='103.000000,97.000000 102.000000,95.000000 105.000000,96.000000 ' style='fill:blue;stroke:black;stroke-width:0.1' />
 <polygon points='101.000000,98.000000 103.000000,97.000000 102.000000,98.000000 ' style='fill:red;stroke:black;stroke-width:0.1' />
 <polygon points='103.000000,101.000000 102.000000,99.000000 104.000000,98.000000 107.000000,99.000000 108.000000,101.000000 107.000000,102.000000 105.000000,102.000000 ' style='fill:green;stroke:black;stroke-width:0.1' />
-<polygon points='99.000000,96.000000 103.000000,101.000000 101.000000,103.000000 ' style='fill:pink;stroke:black;stroke-width:0.1' />
-<polygon points='101.000000,98.000000 99.000000,96.000000 103.000000,97.000000 ' style='fill:indigo;stroke:black;stroke-width:0.1' />
+<polygon points='98.000000,102.000000 101.000000,103.000000 ' style='fill:pink;stroke:black;stroke-width:0.1' />
+<polygon points='101.000000,98.000000 102.000000,95.000000 103.000000,97.000000 ' style='fill:indigo;stroke:black;stroke-width:0.1' />
+<polygon points='98.000000,102.000000 101.000000,98.000000 102.000000,99.000000 103.000000,101.000000 101.000000,103.000000 ' style='fill:yellow;stroke:black;stroke-width:0.1' />
 </svg>
