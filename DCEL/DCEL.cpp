@@ -149,6 +149,7 @@ void DCEL::split(Vertex* v1, Vertex* v2) {
         temp = temp->nxt;
     } while (temp != e);
 
+    this->edges.push_back(e);
     this->faces.push_back(new_face);
     v1->leave = e->twin;
     return;
@@ -164,8 +165,11 @@ void DCEL::unite(HalfEdge* e) {
     e->twin->org->leave = e1;
 
     e4->nxt = e1; e1->prev = e4;
-    
+
     e2->nxt = e3; e3->prev = e2;
+
+    e4->face->edge = NULL;
+    e2->face->edge = NULL;
 
     delete e->twin;
     delete e;
@@ -177,13 +181,16 @@ void DCEL::unite(HalfEdge* e) {
         temp = temp->nxt;
     } while (temp != e4);
 
+
     this->faces.push_back(new_face);
 }
 
 void DCEL::print() {
     // std::cout << "STARTING FACE PRINTING" << std::endl;
-    std::cout << this->faces.size() << std::endl;
-    for (Face* f : this->faces) {
+    int cnt = 0;
+    for (Face* f : this->faces) cnt += f->edge != NULL;
+    std::cout << cnt << std::endl;
+    for (Face* f : this->faces) if (f->edge != NULL) {
         auto ans = f->enumerate_all_vertices();
         std::cout << ans.size() << std::endl;
         for (Vertex* v : ans) {

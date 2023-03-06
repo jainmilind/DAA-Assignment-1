@@ -1,4 +1,4 @@
-g++ main.cpp -o main.out 
+g++ main.cpp -o main.out -g
 ./main.out < testcases/$1.txt > out.txt
 
 cd Visualizer

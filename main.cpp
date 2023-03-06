@@ -5,6 +5,7 @@
 #include <iostream>
 #include <math.h>   
 #include <array>
+#include <map>
 #include "DCEL/DCEL.cpp"
 
 /*
@@ -191,18 +192,27 @@ void merging(DCEL& polygon) {
     std::vector<HalfEdge*> lle = { NULL };
 
     for (HalfEdge* e : polygon.edges) {
-        if (e->face and e->twin->face) {
+        if (e->face != NULL and e->twin->face != NULL) {
             lle.push_back(e);
         }
     }
 
-    std::map<Vertex*, std::vector<std::pair<Face*, Vertex*>>> lp;
     assert(lle.size() == np);
+    std::map<Vertex*, std::vector<std::pair<Face*, Vertex*>>> lp;
+
+    for (Face* cur_face : polygon.faces) {
+        auto cur_edge = cur_face->edge;
+        do {
+            lp[cur_edge->org].push_back({ cur_face, cur_edge->nxt->org });
+            cur_edge = cur_edge->nxt;
+        } while (cur_edge != cur_face->edge);
+    }
+
     for (int j = 1; j <= m; ++j) {
         Vertex* vs = lle[j]->org;
         Vertex* vt = lle[j]->twin->org;
 
-        // ! Altered 3.2
+        // // ! Altered 3.2
         if ((lp[vs].size() > 2 and lp[vt].size() > 2) or
             (lp[vs].size() > 2 and is_convex_angle(vt, lle[j]->twin)) or
             (lp[vt].size() > 2 and is_convex_angle(vs, lle[j])) or
@@ -224,21 +234,60 @@ void merging(DCEL& polygon) {
 
             assert(u != NULL);
             assert(cnt == 1);
-            
-            auto idu = std::find(polygon.faces.begin(), polygon.faces.end(), u) - polygon.faces.begin();
+
+            int idu = std::find(polygon.faces.begin(), polygon.faces.end(), u) - polygon.faces.begin();
 
             auto j1 = lle[j]->twin->prev->org; // prev(pu, vt);
             auto i3 = lle[j]->twin->nxt->twin->org; // next(pu, vs);
 
-            // TODO: use map to map face to integer
+            // // ! isn't this useless as h loop at bottom has same time complexity as number of faces
+            // // TODO: use map to map face to integer 
+
             if (angle(i1, i2, i3) <= 180 and angle(j1, j2, j3) <= 180) {
                 np++;
 
-                polygon.unite(lup[j], lup[idu]);
+                // // TODO: Delete old stuff from lp
+                // // ? isn't this hard / time consuming
+                // // * anyways it will have same time complexity due to h loop
+
+                // Stores all stuff i have to delete
+                std::map<Vertex*, std::set<std::pair<Face*, Vertex*>>> del; 
+                for (Face* old_face : { u, lle[j]->face }) {
+                    auto cur_edge = old_face->edge;
+                    do {
+                        del[cur_edge->org].insert({ old_face, cur_edge->nxt->org });
+                        cur_edge = cur_edge->nxt;
+                    } while (cur_edge != old_face->edge);
+                }
+
+                for (auto &x : del) {
+                    Vertex* v = x.first;
+                    auto &st = x.second;
+
+                    std::vector<std::pair<Face*, Vertex*>> take;
+                    for (auto &val : lp[v]) {
+                        if (!st.count(val))
+                            take.push_back(val);
+                    }
+
+                    lp[v].swap(take);
+                } 
+
+
+                polygon.unite(lle[j]);
+                // // TODO: Add new stuff in lp
+                // // ? this is straight forward
+
+                auto new_face = polygon.faces.back();
+                auto cur_edge = new_face->edge;
+                do {
+                    lp[cur_edge->org].push_back({ new_face, cur_edge->nxt->org });
+                    cur_edge = cur_edge->nxt;
+                } while (cur_edge != new_face->edge);
+
                 ldp[j] = false;
                 ldp[idu] = false;
-                // ldp[np] = true;
-                ldp.push_back(true);
+                ldp.push_back(true); // ldp[np] = true;
                 lup[j] = np;
                 lup[idu] = np;
             }
@@ -249,6 +298,12 @@ void merging(DCEL& polygon) {
             }
         }
     }
+
+    // for (int i = 0; i <= m; ++i) {
+    //     if (lup[i] != i) {
+    //         polygon.faces.erase(std::find(polygon.faces.begin(), polygon.faces.end(), lle[i]->face));
+    //     }
+    // }
 }
 
 
@@ -261,5 +316,8 @@ int main() {
     DCEL polygon = DCEL(a);
 
     decomopse_mp1(polygon);
+    // polygon.print();
+    
+    merging(polygon);
     polygon.print();
 }
