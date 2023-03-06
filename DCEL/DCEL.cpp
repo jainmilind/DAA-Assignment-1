@@ -155,7 +155,7 @@ void DCEL::split(Vertex* v1, Vertex* v2) {
     return;
 }
 
-void DCEL::unite(HalfEdge* e) {
+Face* DCEL::unite(HalfEdge* e) {
     auto e1 = e->nxt;
     auto e2 = e->prev;
     auto e3 = e->twin->nxt;
@@ -168,13 +168,13 @@ void DCEL::unite(HalfEdge* e) {
 
     e2->nxt = e3; e3->prev = e2;
 
-    e4->face->edge = NULL;
+    // e4->face->edge = NULL;
     e2->face->edge = NULL;
 
-    delete e->twin;
-    delete e;
+    // delete e->twin;
+    // delete e;
 
-    Face* new_face = new Face(e4);
+    // Face* new_face = new Face(e4);
     auto temp = e4;
     do {
         temp->face = e4->face;
@@ -182,7 +182,8 @@ void DCEL::unite(HalfEdge* e) {
     } while (temp != e4);
 
 
-    this->faces.push_back(new_face);
+    // this->faces.push_back(new_face);
+    return e4->face;
 }
 
 void DCEL::print() {

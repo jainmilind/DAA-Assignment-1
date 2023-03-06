@@ -8,7 +8,7 @@
 #include <map>
 #include "DCEL/DCEL.cpp"
 
-/*
+
 // !remove in end (for debugging only)
 using namespace std;
 template <typename A, typename B> ostream& operator<<(ostream& os, const pair<A, B>& p) { return os << "(" << p.first << ", " << p.second << ")"; }
@@ -16,7 +16,7 @@ template <typename T_container, typename T = typename enable_if < !is_same<T_con
 template <typename T> void debug_out(string s, T t) { cout << "[" << s << ": " << t << "]\n"; }
 template <typename T, typename... U> void debug_out(string s, T t, U... u) { int w = 0, c = 0; while (w < (int)s.size()) { if (s[w] == '(') c++; if (s[w] == ')') c--; if (!c and s[w] == ',') break; w++; } cout << "[" << s.substr(0, w) << ": " << t << "] "; debug_out(s.substr(w + 2, (int)s.size() - w - 1), u...); }
 #define dbg(x...) debug_out(#x, x)
-*/
+
 
 // measures angle in anticlockwise direction with pivot at b (degrees)
 double angle(Vertex* a, Vertex* b, Vertex* c) {
@@ -54,7 +54,8 @@ bool is_inside_rectangle(Rectangle& rectangle, Vertex* v) {
 //
 bool is_inside_polygon(std::vector<Vertex*>& polygon, Vertex* v) {
     int n = polygon.size();
-    assert(n > 2);
+    // if (n <= 2) return false;
+    // assert(n > 2);
     int i = 0, j = 0;
     bool answer = false;
     for (i = 0, j = n - 1; i < n; j = i++) {
@@ -181,6 +182,14 @@ void merging(DCEL& polygon) {
     int np = polygon.faces.size();
     int m = np - 1;
 
+    std::map<Face*, int> ftoi;
+    std::map<int, Face*> itof;
+
+    for (int i = 0; i < np; i++) {
+        ftoi[polygon.faces[i]] = i;
+        itof[i] = polygon.faces[i];
+    }
+
     std::vector<bool> ldp(np + 1);
     std::vector<int> lup(np + 1);
 
@@ -198,21 +207,33 @@ void merging(DCEL& polygon) {
     }
 
     assert(lle.size() == np);
-    std::map<Vertex*, std::vector<std::pair<Face*, Vertex*>>> lp;
+    std::map<Vertex*, std::set<std::pair<int, Vertex*>>> lp;
 
     for (Face* cur_face : polygon.faces) {
         auto cur_edge = cur_face->edge;
         do {
-            lp[cur_edge->org].push_back({ cur_face, cur_edge->nxt->org });
+            lp[cur_edge->org].insert({ ftoi[cur_face], cur_edge->nxt->org });
             cur_edge = cur_edge->nxt;
         } while (cur_edge != cur_face->edge);
     }
+
+    for (HalfEdge* e : lle) {
+        if (!e) continue;
+        Vertex* v1 = e->org;
+        Vertex* v2 = e->twin->org;
+        lp[v1].insert({ ftoi[e->face], v2 });
+        lp[v1].insert({ ftoi[e->twin->face], v2 });
+
+        lp[v2].insert({ ftoi[e->face], v1 });
+        lp[v2].insert({ ftoi[e->twin->face], v1 });
+    }
+
+
 
     for (int j = 1; j <= m; ++j) {
         Vertex* vs = lle[j]->org;
         Vertex* vt = lle[j]->twin->org;
 
-        // // ! Altered 3.2
         if ((lp[vs].size() > 2 and lp[vt].size() > 2) or
             (lp[vs].size() > 2 and is_convex_angle(vt, lle[j]->twin)) or
             (lp[vt].size() > 2 and is_convex_angle(vs, lle[j])) or
@@ -223,87 +244,63 @@ void merging(DCEL& polygon) {
             auto j3 = lle[j]->nxt->twin->org; // next(pj, vt)
             auto i1 = lle[j]->prev->org; // prev(pj, vt)
 
-            Face* u = NULL;
+            int u = -1;
             int cnt = 0;
+            std::set<int> lups;
             for (auto cur : lp[vt]) {
-                if (cur.second == vs and cur.first != lle[j]->face) {
+                if (cur.second == vs and lup[cur.first] != lup[ftoi[lle[j]->face]]) {
+                    lups.insert(lup[cur.first]);
                     u = cur.first;
                     cnt++;
                 }
             }
 
-            assert(u != NULL);
+            
+            // if (cnt > 1) {
+            //     std::cout << vs->x << ' ' << vs->y << std::endl; 
+            //     std::cout << vt->x << ' ' << vt->y << std::endl; 
+                // std::cout << lup[u] << ' ' <<  lup[ftoi[lle[j]->face]] << std::endl; 
+            //     for (int i : lups)
+            //         std::cout << i << std::endl; 
+            //     std::cout << cnt << std::endl; 
+            // }
+            
+            assert(u != -1);
             assert(cnt == 1);
-
-            int idu = std::find(polygon.faces.begin(), polygon.faces.end(), u) - polygon.faces.begin();
 
             auto j1 = lle[j]->twin->prev->org; // prev(pu, vt);
             auto i3 = lle[j]->twin->nxt->twin->org; // next(pu, vs);
 
-            // // ! isn't this useless as h loop at bottom has same time complexity as number of faces
-            // // TODO: use map to map face to integer 
-
             if (angle(i1, i2, i3) <= 180 and angle(j1, j2, j3) <= 180) {
-                np++;
+                Face* new_face = polygon.unite(lle[j]);
+                int id = ftoi[new_face];
 
-                // // TODO: Delete old stuff from lp
-                // // ? isn't this hard / time consuming
-                // // * anyways it will have same time complexity due to h loop
-
-                // Stores all stuff i have to delete
-                std::map<Vertex*, std::set<std::pair<Face*, Vertex*>>> del; 
-                for (Face* old_face : { u, lle[j]->face }) {
-                    auto cur_edge = old_face->edge;
-                    do {
-                        del[cur_edge->org].insert({ old_face, cur_edge->nxt->org });
-                        cur_edge = cur_edge->nxt;
-                    } while (cur_edge != old_face->edge);
-                }
-
-                for (auto &x : del) {
-                    Vertex* v = x.first;
-                    auto &st = x.second;
-
-                    std::vector<std::pair<Face*, Vertex*>> take;
-                    for (auto &val : lp[v]) {
-                        if (!st.count(val))
-                            take.push_back(val);
-                    }
-
-                    lp[v].swap(take);
-                } 
-
-
-                polygon.unite(lle[j]);
-                // // TODO: Add new stuff in lp
-                // // ? this is straight forward
-
-                auto new_face = polygon.faces.back();
-                auto cur_edge = new_face->edge;
-                do {
-                    lp[cur_edge->org].push_back({ new_face, cur_edge->nxt->org });
-                    cur_edge = cur_edge->nxt;
-                } while (cur_edge != new_face->edge);
 
                 ldp[j] = false;
-                ldp[idu] = false;
-                ldp.push_back(true); // ldp[np] = true;
-                lup[j] = np;
-                lup[idu] = np;
+                ldp[u] = false;
+                ldp[id] = true; // ldp[np] = true;
+                lup[j] = id;
+                lup[u] = id;
+
+                for (int h = 1; h < np; ++h) {
+                    if (lup[h] == j or lup[h] == u)
+                        lup[h] = id;
+                }
             }
 
-            for (int h = 1; h < np; ++h) {
-                if (lup[h] == j or lup[h] == idu)
-                    lup[h] = np;
-            }
         }
     }
 
-    // for (int i = 0; i <= m; ++i) {
-    //     if (lup[i] != i) {
-    //         polygon.faces.erase(std::find(polygon.faces.begin(), polygon.faces.end(), lle[i]->face));
-    //     }
-    // }
+
+    std::vector<Face*> new_faces;
+    for (auto face : polygon.faces) {
+        int id = ftoi[face];
+        if (lup[id] == id) {
+            new_faces.push_back(itof[id]);
+        }
+    }
+
+    new_faces.swap(polygon.faces);
 }
 
 
@@ -317,7 +314,7 @@ int main() {
 
     decomopse_mp1(polygon);
     // polygon.print();
-    
+
     merging(polygon);
     polygon.print();
 }
