@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include <cassert>
 #include "DCEL.h"
 
@@ -151,6 +152,32 @@ void DCEL::split(Vertex* v1, Vertex* v2) {
     this->faces.push_back(new_face);
     v1->leave = e->twin;
     return;
+}
+
+void DCEL::unite(HalfEdge* e) {
+    auto e1 = e->nxt;
+    auto e2 = e->prev;
+    auto e3 = e->twin->nxt;
+    auto e4 = e->twin->prev;
+
+    e->org->leave = e3;
+    e->twin->org->leave = e1;
+
+    e4->nxt = e1; e1->prev = e4;
+    
+    e2->nxt = e3; e3->prev = e2;
+
+    delete e->twin;
+    delete e;
+
+    Face* new_face = new Face(e4);
+    auto temp = e4;
+    do {
+        temp->face = e4->face;
+        temp = temp->nxt;
+    } while (temp != e4);
+
+    this->faces.push_back(new_face);
 }
 
 void DCEL::print() {

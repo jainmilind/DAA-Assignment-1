@@ -53,6 +53,7 @@ bool is_inside_rectangle(Rectangle& rectangle, Vertex* v) {
 //
 bool is_inside_polygon(std::vector<Vertex*>& polygon, Vertex* v) {
     int n = polygon.size();
+    assert(n > 2);
     int i = 0, j = 0;
     bool answer = false;
     for (i = 0, j = n - 1; i < n; j = i++) {
@@ -166,6 +167,90 @@ void decomopse_mp1(DCEL& polygon) {
         m++;
     }
 }
+
+bool is_convex_angle(Vertex* v, HalfEdge* ed) {
+    bool ans = true;
+    Vertex* prev = ed->twin->nxt->twin->org;
+    Vertex* nxt = ed->prev->org;
+
+    return angle(prev, v, nxt) <= 180;
+}
+
+void merging(DCEL& polygon) {
+    int np = polygon.faces.size();
+    int m = np - 1;
+
+    std::vector<bool> ldp(np + 1);
+    std::vector<int> lup(np + 1);
+
+    for (int i = 1; i <= np; ++i) {
+        ldp[i] = true;
+        lup[i] = i;
+    }
+
+    std::vector<HalfEdge*> lle = { NULL };
+
+    for (HalfEdge* e : polygon.edges) {
+        if (e->face and e->twin->face) {
+            lle.push_back(e);
+        }
+    }
+
+    std::map<Vertex*, std::vector<std::pair<Face*, Vertex*>>> lp;
+    assert(lle.size() == np);
+    for (int j = 1; j <= m; ++j) {
+        Vertex* vs = lle[j]->org;
+        Vertex* vt = lle[j]->twin->org;
+
+        // ! Altered 3.2
+        if ((lp[vs].size() > 2 and lp[vt].size() > 2) or
+            (lp[vs].size() > 2 and is_convex_angle(vt, lle[j]->twin)) or
+            (lp[vt].size() > 2 and is_convex_angle(vs, lle[j])) or
+            (is_convex_angle(vs, lle[j]) and is_convex_angle(vt, lle[j]->twin)))
+        {
+            auto j2 = vt;
+            auto i2 = vs;
+            auto j3 = lle[j]->nxt->twin->org; // next(pj, vt)
+            auto i1 = lle[j]->prev->org; // prev(pj, vt)
+
+            Face* u = NULL;
+            int cnt = 0;
+            for (auto cur : lp[vt]) {
+                if (cur.second == vs and cur.first != lle[j]->face) {
+                    u = cur.first;
+                    cnt++;
+                }
+            }
+
+            assert(u != NULL);
+            assert(cnt == 1);
+            
+            auto idu = std::find(polygon.faces.begin(), polygon.faces.end(), u) - polygon.faces.begin();
+
+            auto j1 = lle[j]->twin->prev->org; // prev(pu, vt);
+            auto i3 = lle[j]->twin->nxt->twin->org; // next(pu, vs);
+
+            // TODO: use map to map face to integer
+            if (angle(i1, i2, i3) <= 180 and angle(j1, j2, j3) <= 180) {
+                np++;
+
+                polygon.unite(lup[j], lup[idu]);
+                ldp[j] = false;
+                ldp[idu] = false;
+                // ldp[np] = true;
+                ldp.push_back(true);
+                lup[j] = np;
+                lup[idu] = np;
+            }
+
+            for (int h = 1; h < np; ++h) {
+                if (lup[h] == j or lup[h] == idu)
+                    lup[h] = np;
+            }
+        }
+    }
+}
+
 
 int main() {
     int n; std::cin >> n;

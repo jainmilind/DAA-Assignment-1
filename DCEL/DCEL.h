@@ -53,6 +53,7 @@ public:
     DCEL();
     DCEL(std::vector<std::pair<double, double>>&);
     void split(Vertex*, Vertex*);
+    void unite(HalfEdge*);
     void print();
 };
 
