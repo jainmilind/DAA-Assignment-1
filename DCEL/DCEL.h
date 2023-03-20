@@ -1,4 +1,5 @@
 #include <vector>
+#include <stdio.h>
 
 class Face;
 class HalfEdge;
@@ -54,6 +55,7 @@ public:
     DCEL(std::vector<std::pair<double, double>>&);
     void split(Vertex*, Vertex*);
     Face* unite(HalfEdge*);
+    Face* unite(Face*, Face*);
     void print();
 };
 

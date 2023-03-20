@@ -1,3 +1,5 @@
+#include <cassert>
+#include <cstddef>
 #include <vector>
 #include <set>
 #include <queue>
@@ -10,12 +12,12 @@
 
 
 // !remove in end (for debugging only)
-using namespace std;
-template <typename A, typename B> ostream& operator<<(ostream& os, const pair<A, B>& p) { return os << "(" << p.first << ", " << p.second << ")"; }
-template <typename T_container, typename T = typename enable_if < !is_same<T_container, string>::value, typename T_container::value_type >::type > ostream& operator<<(ostream& os, const T_container& v) { os << '{'; string sep; for (const T& x : v) os << sep << x, sep = ", "; return os << '}'; }
-template <typename T> void debug_out(string s, T t) { cout << "[" << s << ": " << t << "]\n"; }
-template <typename T, typename... U> void debug_out(string s, T t, U... u) { int w = 0, c = 0; while (w < (int)s.size()) { if (s[w] == '(') c++; if (s[w] == ')') c--; if (!c and s[w] == ',') break; w++; } cout << "[" << s.substr(0, w) << ": " << t << "] "; debug_out(s.substr(w + 2, (int)s.size() - w - 1), u...); }
-#define dbg(x...) debug_out(#x, x)
+// using namespace std;
+// template <typename A, typename B> ostream& operator<<(ostream& os, const pair<A, B>& p) { return os << "(" << p.first << ", " << p.second << ")"; }
+// template <typename T_container, typename T = typename enable_if < !is_same<T_container, string>::value, typename T_container::value_type >::type > ostream& operator<<(ostream& os, const T_container& v) { os << '{'; string sep; for (const T& x : v) os << sep << x, sep = ", "; return os << '}'; }
+// template <typename T> void debug_out(string s, T t) { cout << "[" << s << ": " << t << "]\n"; }
+// template <typename T, typename... U> void debug_out(string s, T t, U... u) { int w = 0, c = 0; while (w < (int)s.size()) { if (s[w] == '(') c++; if (s[w] == ')') c--; if (!c and s[w] == ',') break; w++; } cout << "[" << s.substr(0, w) << ": " << t << "] "; debug_out(s.substr(w + 2, (int)s.size() - w - 1), u...); }
+// #define dbg(x...) debug_out(#x, x)
 
 
 // measures angle in anticlockwise direction with pivot at b (degrees)
@@ -30,7 +32,7 @@ double angle(Vertex* a, Vertex* b, Vertex* c) {
     return angle * 180 / M_PI + 180;
 }
 
-const double inf = INT64_MAX;
+const double inf = (double)INT64_MAX;
 Rectangle get_rectangle(std::vector<Vertex*>& vertices) {
     Rectangle ans = Rectangle(inf, inf, -inf, -inf);
     for (Vertex* v : vertices) {
@@ -87,14 +89,44 @@ std::set<Vertex*> get_notches(Face* face) {
     std::set<Vertex*> notches;
 
     int n = vertices.size();
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
         int pre = (i - 1 + n) % n;
         int nxt = (i + 1) % n;
-        if (angle(vertices[pre], vertices[i], vertices[nxt]) >= 180)
+        if (angle(vertices[pre], vertices[i], vertices[nxt]) > 180)
             notches.insert(vertices[i]);
     }
 
     return notches;
+}
+
+Vertex* getNextVertex(Vertex *v, Face *f){
+    Vertex *u = NULL;
+    HalfEdge *temp = f -> edge;
+    do {
+        if(temp -> org == v)
+            u = temp -> twin -> org;
+        temp = temp -> nxt;
+    }while (temp != f -> edge);
+
+    assert(u != NULL);
+    return u;
+}
+
+Vertex* getPrevVertex(Vertex *v, Face *f){
+    Vertex *u = NULL;
+    HalfEdge *temp = f -> edge;
+    do {
+        if(temp -> nxt -> org == v)
+            u = temp -> org;
+        temp = temp -> nxt;
+    }while (temp != f -> edge);
+
+    assert(temp != NULL);
+    return u;
+}
+
+bool isLinear(Vertex *v1, Vertex *v2, Vertex *v3){
+    return abs((v2->y - v1->y)/(v2->x - v1->x) - (v3->y - v2->y)/(v3->x - v2->x)) < 1e-8;
 }
 
 void decomopse_mp1(DCEL& polygon) {
@@ -106,34 +138,38 @@ void decomopse_mp1(DCEL& polygon) {
     while (n > 3) {
         std::vector<Vertex*> v(n + 2);
         v[1] = l[m - 1].back();
-        v[2] = v[1]->leave->nxt->org;
+        v[2] = getNextVertex(v[1], polygon.faces[0]);
         l.push_back({});
         l.back() = { v[1], v[2] };
         int i = 2;
-        v[3] = v[2]->leave->nxt->org;
+        v[3] = getNextVertex(v[2], polygon.faces[0]);
 
-        while (angle(v[i - 1], v[i], v[i + 1]) <= 180
+
+        while (((angle(v[i - 1], v[i], v[i + 1]) <= 180
             and angle(v[i], v[i + 1], v[1]) <= 180
-            and angle(v[i + 1], v[1], v[2]) <= 180
+            and angle(v[i + 1], v[1], v[2]) <= 180) 
+            or isLinear(v[i - 1], v[i], v[i+1]))
             and l[m].size() < n) {
-            l[m].push_back(v[i + 1]);
 
+            l[m].push_back(v[i + 1]);
             i++;
-            v[i + 1] = v[i]->leave->nxt->org;
+            v[i + 1] = getNextVertex(v[i], polygon.faces[0]);
         }
 
         if (l[m].size() != n) {
-            std::set<Vertex*> cur_notches = get_notches(l[m][0]->leave->face);
+            std::set<Vertex*> cur_notches = get_notches(polygon.faces[0]);
             for (Vertex* now : l[m])
-                if (cur_notches.count(now))
+                // if (cur_notches.count(now))
                     cur_notches.erase(now);
 
             std::deque<Vertex*> lpvs(cur_notches.begin(), cur_notches.end());
+            
             while (lpvs.size() > 0) {
                 auto rectangle = get_rectangle(l[m]);
                 bool backward = false;
+
                 while (!backward and lpvs.size() > 0) {
-                    while (lpvs.size() > 0 and !is_inside_rectangle(rectangle, lpvs[0])) {
+                    while (lpvs.size() > 0 and !is_inside_rectangle(rectangle, lpvs.front())) {
                         lpvs.pop_front();
                     }
                     if (lpvs.size() > 0) {
@@ -144,13 +180,13 @@ void decomopse_mp1(DCEL& polygon) {
                                 if (onSameSide(l[m][0], V, l[m].back(), l[m][x]))
                                     vtr.insert(l[m][x]);
                             }
-                            vtr.insert(v[1]);
+                            // vtr.insert(v[1]);
                             std::vector<Vertex*> new_l;
                             for (Vertex* i : l[m]) {
                                 if (vtr.count(i)) continue;
                                 new_l.push_back(i);
                             }
-                            l[m] = new_l;
+                            l[m].swap(new_l);
                             backward = true;
                         }
                         lpvs.pop_front();
@@ -159,150 +195,117 @@ void decomopse_mp1(DCEL& polygon) {
             }
         }
 
+
         if (l[m].back() != v[2]) {
+            
             if (l[m].size() != n)
                 polygon.split(l[m][0], l[m].back());
             else break;
+
             n = n - l[m].size() + 2;
         }
+
 
         m++;
     }
 }
 
-bool is_convex_angle(Vertex* v, HalfEdge* ed) {
+bool is_convex_angle(Vertex* v) {
     bool ans = true;
-    Vertex* prev = ed->twin->nxt->twin->org;
-    Vertex* nxt = ed->prev->org;
+    Vertex* prev = v -> leave -> nxt -> org;
+    Vertex* nxt = v -> leave -> prev -> org;
 
     return angle(prev, v, nxt) <= 180;
 }
 
-void merging(DCEL& polygon) {
-    int np = polygon.faces.size();
-    int m = np - 1;
+
+void merge_polygon(DCEL &polygon){
+
+    std::vector<HalfEdge*> lle = {NULL};
+    for(auto e : polygon.edges){
+        if(e -> org -> leave != e && e -> twin -> org -> leave != e -> twin)
+            lle.push_back(e);
+    }
+
+    std::map<Vertex*, std::set<std::pair<Vertex*, Face*>>> lp;
+
+    for(int i = 1; i < (int)lle.size(); i++){
+        HalfEdge *e = lle[i];
+
+        Vertex *v1 = e -> org;
+        Vertex *v2 = e -> twin -> org;
+        
+        lp[v1].insert({v2, e -> face}); lp[v2].insert({v1, e -> face});
+        lp[v1].insert({v2, e -> twin -> face}); lp[v2].insert({v1, e -> twin -> face});
+    }
 
     std::map<Face*, int> ftoi;
     std::map<int, Face*> itof;
 
-    for (int i = 0; i < np; i++) {
-        ftoi[polygon.faces[i]] = i;
-        itof[i] = polygon.faces[i];
+    int temp = 1;
+    for(auto face : polygon.faces){
+        ftoi[face] = temp;
+        itof[temp] = face;
+        temp++;
     }
 
-    std::vector<bool> ldp(np + 1);
-    std::vector<int> lup(np + 1);
+    int np = polygon.faces.size();
+    int m = np - 1;
 
-    for (int i = 1; i <= np; ++i) {
-        ldp[i] = true;
-        lup[i] = i;
-    }
+    std::vector<bool> ldp(np+1, true);
+    std::vector<int> lup(np+1);
 
-    std::vector<HalfEdge*> lle = { NULL };
+    for(int i = 1; i <= np; i++) lup[i] = i;
 
-    for (HalfEdge* e : polygon.edges) {
-        if (e->face != NULL and e->twin->face != NULL) {
-            lle.push_back(e);
-        }
-    }
+    for(int j = 1; j <= m; j++){
 
-    assert(lle.size() == np);
-    std::map<Vertex*, std::set<std::pair<int, Vertex*>>> lp;
+        Vertex *vs = lle[j] -> org;
+        Vertex *vt = lle[j] -> twin -> org;
 
-    for (Face* cur_face : polygon.faces) {
-        auto cur_edge = cur_face->edge;
-        do {
-            lp[cur_edge->org].insert({ ftoi[cur_face], cur_edge->nxt->org });
-            cur_edge = cur_edge->nxt;
-        } while (cur_edge != cur_face->edge);
-    }
+        Face *pj = lle[j] -> face;
+        Face *pu = lle[j] -> twin -> face;
 
-    for (HalfEdge* e : lle) {
-        if (!e) continue;
-        Vertex* v1 = e->org;
-        Vertex* v2 = e->twin->org;
-        lp[v1].insert({ ftoi[e->face], v2 });
-        lp[v1].insert({ ftoi[e->twin->face], v2 });
-
-        lp[v2].insert({ ftoi[e->face], v1 });
-        lp[v2].insert({ ftoi[e->twin->face], v1 });
-    }
-
-
-
-    for (int j = 1; j <= m; ++j) {
-        Vertex* vs = lle[j]->org;
-        Vertex* vt = lle[j]->twin->org;
-
-        if ((lp[vs].size() > 2 and lp[vt].size() > 2) or
-            (lp[vs].size() > 2 and is_convex_angle(vt, lle[j]->twin)) or
-            (lp[vt].size() > 2 and is_convex_angle(vs, lle[j])) or
-            (is_convex_angle(vs, lle[j]) and is_convex_angle(vt, lle[j]->twin)))
+        if((lp[vs].size() > 2 and lp[vt].size() > 2) or
+            (lp[vs].size() > 2 and is_convex_angle(vt)) or
+            (lp[vt].size() > 2 and is_convex_angle(vs)) or
+            (is_convex_angle(vs) and is_convex_angle(vt)))
         {
-            auto j2 = vt;
-            auto i2 = vs;
-            auto j3 = lle[j]->nxt->twin->org; // next(pj, vt)
-            auto i1 = lle[j]->prev->org; // prev(pj, vt)
+            Vertex *j2 = vt, *i2 = vs, *j3 = getNextVertex(vt, pj), *i1 = getPrevVertex(vs, pj);
+            Vertex *j1 = getPrevVertex(vt, pu), *i3 = getNextVertex(vs, pu);
 
-            int u = -1;
-            int cnt = 0;
-            std::set<int> lups;
-            for (auto cur : lp[vt]) {
-                if (cur.second == vs and lup[cur.first] != lup[ftoi[lle[j]->face]]) {
-                    lups.insert(lup[cur.first]);
-                    u = cur.first;
-                    cnt++;
+            if(angle(i1, i2, i3) <= 180 && angle(j1, j2, j3) <= 180){
+                np = np + 1;
+                
+                Face *new_face = polygon.unite(pu, pj);
+                ftoi[new_face] = np;
+                itof[np] = new_face;
+
+                ldp[ftoi[pj]] = false;
+                ldp[ftoi[pu]] = false;
+                ldp.push_back(true);
+
+                lup[ftoi[pj]] = np;
+                lup[ftoi[pu]] = np;
+                lup.push_back(np);
+
+                for(int h = 1; h < np; h++){
+                    if(lup[h] == ftoi[pj] or lup[j] == ftoi[pu])
+                        lup[h] = np;
                 }
             }
-
-            
-            // if (cnt > 1) {
-            //     std::cout << vs->x << ' ' << vs->y << std::endl; 
-            //     std::cout << vt->x << ' ' << vt->y << std::endl; 
-                // std::cout << lup[u] << ' ' <<  lup[ftoi[lle[j]->face]] << std::endl; 
-            //     for (int i : lups)
-            //         std::cout << i << std::endl; 
-            //     std::cout << cnt << std::endl; 
-            // }
-            
-            assert(u != -1);
-            assert(cnt == 1);
-
-            auto j1 = lle[j]->twin->prev->org; // prev(pu, vt);
-            auto i3 = lle[j]->twin->nxt->twin->org; // next(pu, vs);
-
-            if (angle(i1, i2, i3) <= 180 and angle(j1, j2, j3) <= 180) {
-                Face* new_face = polygon.unite(lle[j]);
-                int id = ftoi[new_face];
-
-
-                ldp[j] = false;
-                ldp[u] = false;
-                ldp[id] = true; // ldp[np] = true;
-                lup[j] = id;
-                lup[u] = id;
-
-                for (int h = 1; h < np; ++h) {
-                    if (lup[h] == j or lup[h] == u)
-                        lup[h] = id;
-                }
-            }
-
         }
     }
 
-
-    std::vector<Face*> new_faces;
-    for (auto face : polygon.faces) {
-        int id = ftoi[face];
-        if (lup[id] == id) {
-            new_faces.push_back(itof[id]);
+    std::vector<Face*> merged_faces;
+    for(int i = 1; i < ldp.size(); i++){
+        if(ldp[i]){
+            merged_faces.push_back(itof[i]);
         }
     }
 
-    new_faces.swap(polygon.faces);
+    polygon.faces.swap(merged_faces);
+
 }
-
 
 int main() {
     int n; std::cin >> n;
@@ -313,8 +316,7 @@ int main() {
     DCEL polygon = DCEL(a);
 
     decomopse_mp1(polygon);
-    // polygon.print();
 
-    merging(polygon);
+    merge_polygon(polygon);
     polygon.print();
 }

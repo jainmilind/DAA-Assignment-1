@@ -34,12 +34,12 @@ Face::Face(HalfEdge* edge) {
 
 // takes two isolated vertices and joins them with a halfedge
 HalfEdge::HalfEdge(Vertex* src, Vertex* des) {
-    src->leave = this;
     this->org = src;
 
     this->twin = new HalfEdge();
     this->twin->org = des;
     this->twin->twin = this;
+    des->leave = this -> twin;
 }
 
 // takes a previous halfedge and adds a new vertex
@@ -54,7 +54,7 @@ HalfEdge::HalfEdge(HalfEdge* prev, Vertex* v) {
     this->twin->nxt = prev->twin;
     prev->twin->prev = this->twin;
 
-    prev->twin->org->leave = this;
+    v->leave = this->twin;
 }
 
 HalfEdge::HalfEdge(HalfEdge* prev, HalfEdge* nxt) {
@@ -63,10 +63,10 @@ HalfEdge::HalfEdge(HalfEdge* prev, HalfEdge* nxt) {
     this->prev = prev;
 
     this->twin = new HalfEdge();
+    this->twin->twin = this;
     this->twin->org = nxt->org;
     this->twin->prev = nxt->twin;
     this->twin->nxt = prev->twin;
-    this->twin->twin = this;
 
     prev->nxt = this;
     nxt->prev = this;
@@ -81,7 +81,7 @@ HalfEdge::HalfEdge(HalfEdge* prev, HalfEdge* nxt) {
         temp = temp->nxt;
     } while (temp != this);
 
-    prev->twin->org->leave = this;
+    nxt -> org -> leave = this -> twin;
 }
 
 Vertex::Vertex(double x, double y) {
@@ -113,35 +113,39 @@ DCEL::DCEL(std::vector<std::pair<double, double>>& a) {
 
 
 void DCEL::split(Vertex* v1, Vertex* v2) {
+    
     Face* cur = this->faces[0];
-    HalfEdge* e1, * e2;
-    HalfEdge* temp = cur->edge;
+    HalfEdge *e1 = NULL, *e2 = NULL;
+    HalfEdge *temp = cur->edge;
     do {
-        if (temp->org == v1)
+        if (temp->twin->org == v1)
             e1 = temp;
         else if (temp->org == v2)
             e2 = temp;
         temp = temp->nxt;
     } while (temp != cur->edge);
 
-    e1 = e1->prev;
+    assert(e1);
+    assert(e2);
 
-    assert(e1 and e2);
+    HalfEdge *e3 = e1 -> nxt, *e4 = e2 -> prev;
+
     HalfEdge* e = new HalfEdge();
     e->twin = new HalfEdge();
     e->twin->twin = e;
-    e->twin->face = e1->face;
-    e1->face->edge = e->twin;
+
+    e->face = e->twin->face = e1 -> face;
 
     e->org = v2;
     e->twin->org = v1;
 
-    e2->prev->nxt = e; e->prev = e2->prev;
     e1->nxt->prev = e; e->nxt = e1->nxt;
+    e2->prev->nxt = e; e->prev = e2->prev;
 
-    e2->prev = e->twin; e->twin->nxt = e2;
     e1->nxt = e->twin; e->twin->prev = e1;
+    e2->prev = e->twin; e->twin->nxt = e2;
 
+    e1 -> face -> edge = e1;
     Face* new_face = new Face(e);
     temp = e;
     do {
@@ -151,9 +155,40 @@ void DCEL::split(Vertex* v1, Vertex* v2) {
 
     this->edges.push_back(e);
     this->faces.push_back(new_face);
-    v1->leave = e->twin;
+
     return;
 }
+
+Face* DCEL::unite(Face* f1, Face* f2){
+
+    HalfEdge *temp = f1 -> edge;
+    HalfEdge *remove;
+    do {
+        if(temp -> twin -> face == f2){
+            remove = temp;
+            break;
+        }
+        temp = temp->nxt;
+    }while (temp != f1 -> edge);
+
+    HalfEdge *e1 = remove->twin->prev;
+    HalfEdge *e2 = remove->twin->nxt;
+
+    remove->nxt->prev = e1; e1->nxt = remove->nxt;
+    remove->prev->nxt = e2; e2->prev = remove -> prev;
+
+    Face *new_Face = new Face(e1);
+    temp = e1;
+    do {
+        temp->face = new_Face;
+        temp = temp->nxt;
+    }while (temp != e1);
+
+    this->faces.push_back(new_Face);
+
+    return new_Face;
+
+}   
 
 Face* DCEL::unite(HalfEdge* e) {
     auto e1 = e->nxt;
