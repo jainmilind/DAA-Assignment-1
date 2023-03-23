@@ -1,2 +1,8 @@
 <svg height='210' width='500'>
+<polygon points='250.000000,190.000000 240.000000,190.000000 220.000000,190.000000 210.000000,200.000000 200.000000,190.000000 210.000000,190.000000 230.000000,190.000000 ' style='fill:red;stroke:black;stroke-width:0.1' />
+<polygon points='210.000000,190.000000 200.000000,190.000000 200.000000,180.000000 ' style='fill:blue;stroke:black;stroke-width:0.1' />
+<polygon points='230.000000,190.000000 210.000000,190.000000 220.000000,180.000000 ' style='fill:green;stroke:black;stroke-width:0.1' />
+<polygon points='250.000000,190.000000 230.000000,190.000000 240.000000,180.000000 ' style='fill:black;stroke:black;stroke-width:0.1' />
+<polygon points='240.000000,190.000000 250.000000,190.000000 250.000000,200.000000 ' style='fill:white;stroke:black;stroke-width:0.1' />
+<polygon points='220.000000,190.000000 240.000000,190.000000 230.000000,200.000000 ' style='fill:yellow;stroke:black;stroke-width:0.1' />
 </svg>

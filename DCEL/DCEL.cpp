@@ -10,40 +10,73 @@ Vertex::Vertex() {}
 DCEL::DCEL() {}
 Rectangle::Rectangle() {}
 
-Rectangle::Rectangle(double lx, double ly, double ux, double uy) {
+/**
+ * @brief This is a constructor of Rectangle class
+ * It takes two (x-y) coordinates as input and makes a rectangle using the same
+ * @param lx lower left x-coordinate
+ * @param ly lower left y-coordinate
+ * @param ux upper right x-coordinate
+ * @param uy upper right y-coordinate
+ */
+Rectangle::Rectangle(double lx, double ly, double ux, double uy)
+{
     this->lx = lx;
     this->ly = ly;
     this->ux = ux;
     this->uy = uy;
 }
 
-std::vector<Vertex*> Face::enumerate_all_vertices() {
-    std::vector<Vertex*> vertices;
-    HalfEdge* curr = this->edge;
-    do {
+/**
+ * @brief This is a method in Face class
+ * It returns the list of all the vertices present in a face
+ * @return list of vertices
+ */
+std::vector<Vertex *> Face::enumerate_all_vertices()
+{
+    std::vector<Vertex *> vertices;
+    HalfEdge *curr = this->edge;
+    do
+    {
         vertices.push_back(curr->org);
         curr = curr->nxt;
     } while (curr != this->edge);
 
     return vertices;
 }
-
-Face::Face(HalfEdge* edge) {
+/**
+ * @brief This is constructor of Face class
+ * It initializes edge
+ * @param edge edge representing a face
+ */
+Face::Face(HalfEdge *edge)
+{
     this->edge = edge;
 }
 
-// takes two isolated vertices and joins them with a halfedge
-HalfEdge::HalfEdge(Vertex* src, Vertex* des) {
-    src->leave = this;
+/**
+ * @brief This is a constructor of the HalfEdge Class
+ * It makes the half edge between the source and destination vertex and initializes all the attributes
+ * @param src source vertex
+ * @param des destination vertex
+ */
+HalfEdge::HalfEdge(Vertex *src, Vertex *des)
+{
     this->org = src;
 
     this->twin = new HalfEdge();
     this->twin->org = des;
     this->twin->twin = this;
+    des->leave = this->twin;
 }
 
-// takes a previous halfedge and adds a new vertex
-HalfEdge::HalfEdge(HalfEdge* prev, Vertex* v) {
+/**
+ * @brief This is a constructor of the HalfEdge Class
+ * It makes the half edge between the previous HalfEdge and a vertex by initializing all the attributes
+ * @param prev Previous HalgEdge
+ * @param v vertex
+ */
+HalfEdge::HalfEdge(HalfEdge *prev, Vertex *v)
+{
     this->org = prev->twin->org;
     this->prev = prev;
     prev->nxt = this;
@@ -54,19 +87,26 @@ HalfEdge::HalfEdge(HalfEdge* prev, Vertex* v) {
     this->twin->nxt = prev->twin;
     prev->twin->prev = this->twin;
 
-    prev->twin->org->leave = this;
+    v->leave = this->twin;
 }
 
-HalfEdge::HalfEdge(HalfEdge* prev, HalfEdge* nxt) {
+/**
+ * @brief This is a constructor of the HalfEdge Class
+ * It makes the half edge between the previous HalfEdge and the next HalfEdge by initializing all the attributes
+ * @param prev Previous HalgEdge
+ * @param nxt Next HalfEdge
+ */
+HalfEdge::HalfEdge(HalfEdge *prev, HalfEdge *nxt)
+{
     this->org = prev->twin->org;
     this->nxt = nxt;
     this->prev = prev;
 
     this->twin = new HalfEdge();
+    this->twin->twin = this;
     this->twin->org = nxt->org;
     this->twin->prev = nxt->twin;
     this->twin->nxt = prev->twin;
-    this->twin->twin = this;
 
     prev->nxt = this;
     nxt->prev = this;
@@ -74,35 +114,49 @@ HalfEdge::HalfEdge(HalfEdge* prev, HalfEdge* nxt) {
     prev->twin->prev = this->twin;
     nxt->twin->nxt = this->twin;
 
-    Face* new_face = new Face(this);
-    HalfEdge* temp = this;
-    do {
+    Face *new_face = new Face(this);
+    HalfEdge *temp = this;
+    do
+    {
         temp->face = new_face;
         temp = temp->nxt;
     } while (temp != this);
 
-    prev->twin->org->leave = this;
+    nxt->org->leave = this->twin;
 }
 
-Vertex::Vertex(double x, double y) {
+/**
+ * @brief This is a constructor of the Vertex Class
+ * It initializes the the x and y coordinates the vertex
+ * @param x x-coordinate
+ * @param y y-coordinate
+ */
+Vertex::Vertex(double x, double y)
+{
     this->x = x;
     this->y = y;
 }
 
-// points in clockwise order 
-DCEL::DCEL(std::vector<std::pair<double, double>>& a) {
+/**
+ * @brief This is a constructor of the DCEL class
+ * It creates a DCEL data structure with all the points given in clockwise order
+ * @param a list of pair of (x-coordinate,y-coordinate)
+ */
+DCEL::DCEL(std::vector<std::pair<double, double>> &a)
+{
     int n = a.size();
     assert(n > 2 && "Please Enter Valid Polygon ;-;");
 
     this->corr.resize(n);
-    Vertex* v1 = new Vertex(a[0].first, a[0].second);
-    Vertex* v2 = new Vertex(a[1].first, a[1].second);
+    Vertex *v1 = new Vertex(a[0].first, a[0].second);
+    Vertex *v2 = new Vertex(a[1].first, a[1].second);
     this->corr[0] = v1;
     this->corr[1] = v2;
     this->edges.push_back(new HalfEdge(v1, v2));
 
-    for (int i = 2; i < n; ++i) {
-        Vertex* v = new Vertex(a[i].first, a[i].second);
+    for (int i = 2; i < n; ++i)
+    {
+        Vertex *v = new Vertex(a[i].first, a[i].second);
         this->corr[i] = v;
         this->edges.push_back(new HalfEdge(this->edges.back(), v));
     }
@@ -111,51 +165,115 @@ DCEL::DCEL(std::vector<std::pair<double, double>>& a) {
     this->faces.push_back(this->edges.back()->face);
 }
 
+/**
+ * @brief This is a method of DCEL class
+ * It takes two vertices as input and splits a single face into two faces
+ * @param v1 First vertex
+ * @param v2 Second vertex
+ */
+void DCEL::split(Vertex *v1, Vertex *v2)
+{
 
-void DCEL::split(Vertex* v1, Vertex* v2) {
-    Face* cur = this->faces[0];
-    HalfEdge* e1, * e2;
-    HalfEdge* temp = cur->edge;
-    do {
-        if (temp->org == v1)
+    Face *cur = this->faces[0];
+    HalfEdge *e1 = NULL, *e2 = NULL;
+    HalfEdge *temp = cur->edge;
+    do
+    {
+        if (temp->twin->org == v1)
             e1 = temp;
         else if (temp->org == v2)
             e2 = temp;
         temp = temp->nxt;
     } while (temp != cur->edge);
 
-    e1 = e1->prev;
+    assert(e1);
+    assert(e2);
 
-    assert(e1 and e2);
-    HalfEdge* e = new HalfEdge();
+    HalfEdge *e3 = e1->nxt, *e4 = e2->prev;
+
+    HalfEdge *e = new HalfEdge();
     e->twin = new HalfEdge();
     e->twin->twin = e;
-    e->twin->face = e1->face;
-    e1->face->edge = e->twin;
+
+    e->face = e->twin->face = e1->face;
 
     e->org = v2;
     e->twin->org = v1;
 
-    e2->prev->nxt = e; e->prev = e2->prev;
-    e1->nxt->prev = e; e->nxt = e1->nxt;
+    e1->nxt->prev = e;
+    e->nxt = e1->nxt;
+    e2->prev->nxt = e;
+    e->prev = e2->prev;
 
-    e2->prev = e->twin; e->twin->nxt = e2;
-    e1->nxt = e->twin; e->twin->prev = e1;
+    e1->nxt = e->twin;
+    e->twin->prev = e1;
+    e2->prev = e->twin;
+    e->twin->nxt = e2;
 
-    Face* new_face = new Face(e);
+    e1->face->edge = e1;
+    Face *new_face = new Face(e);
     temp = e;
-    do {
+    do
+    {
         temp->face = new_face;
         temp = temp->nxt;
     } while (temp != e);
 
     this->edges.push_back(e);
     this->faces.push_back(new_face);
-    v1->leave = e->twin;
+
     return;
 }
 
-Face* DCEL::unite(HalfEdge* e) {
+/**
+ * @brief This is a method of DCEL class
+ * It takes two faces as input and merges two faces into one
+ * @param f1 First face
+ * @param f2 Second face
+ */
+Face *DCEL::unite(Face *f1, Face *f2)
+{
+    HalfEdge *temp = f1->edge;
+    HalfEdge *remove;
+    do
+    {
+        if (temp->twin->face == f2)
+        {
+            remove = temp;
+            break;
+        }
+        temp = temp->nxt;
+    } while (temp != f1->edge);
+
+    HalfEdge *e1 = remove->twin->prev;
+    HalfEdge *e2 = remove->twin->nxt;
+
+    remove->nxt->prev = e1;
+    e1->nxt = remove->nxt;
+    remove->prev->nxt = e2;
+    e2->prev = remove->prev;
+
+    Face *new_Face = new Face(e1);
+    temp = e1;
+    do
+    {
+        temp->face = new_Face;
+        temp = temp->nxt;
+    } while (temp != e1);
+
+    this->faces.push_back(new_Face);
+
+    return new_Face;
+}
+
+/**
+ * @brief This is a method of DCEL class
+ * It takes a HalfEdge as input and merges two faces into one
+ * @param e Half Edge
+ * @return single face after merging
+ */
+Face *DCEL::unite(HalfEdge *e)
+{
     auto e1 = e->nxt;
     auto e2 = e->prev;
     auto e3 = e->twin->nxt;
@@ -164,9 +282,11 @@ Face* DCEL::unite(HalfEdge* e) {
     e->org->leave = e3;
     e->twin->org->leave = e1;
 
-    e4->nxt = e1; e1->prev = e4;
+    e4->nxt = e1;
+    e1->prev = e4;
 
-    e2->nxt = e3; e3->prev = e2;
+    e2->nxt = e3;
+    e3->prev = e2;
 
     // e4->face->edge = NULL;
     e2->face->edge = NULL;
@@ -176,26 +296,34 @@ Face* DCEL::unite(HalfEdge* e) {
 
     // Face* new_face = new Face(e4);
     auto temp = e4;
-    do {
+    do
+    {
         temp->face = e4->face;
         temp = temp->nxt;
     } while (temp != e4);
-
 
     // this->faces.push_back(new_face);
     return e4->face;
 }
 
-void DCEL::print() {
-    // std::cout << "STARTING FACE PRINTING" << std::endl;
+/**
+ * @brief This is a method of DCEL class
+ * It prints the vertices of the DCEL
+ */
+void DCEL::print()
+{
     int cnt = 0;
-    for (Face* f : this->faces) cnt += f->edge != NULL;
+    for (Face *f : this->faces)
+        cnt += f->edge != NULL;
     std::cout << cnt << std::endl;
-    for (Face* f : this->faces) if (f->edge != NULL) {
-        auto ans = f->enumerate_all_vertices();
-        std::cout << ans.size() << std::endl;
-        for (Vertex* v : ans) {
-            std::cout << v->x << ' ' << v->y << std::endl;
+    for (Face *f : this->faces)
+        if (f->edge != NULL)
+        {
+            auto ans = f->enumerate_all_vertices();
+            std::cout << ans.size() << std::endl;
+            for (Vertex *v : ans)
+            {
+                std::cout << v->x << ' ' << v->y << std::endl;
+            }
         }
-    }
 }
