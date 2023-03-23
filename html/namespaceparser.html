@@ -83,12 +83,15 @@ Variables</h2></td></tr>
 <tr class="memitem:a0585c7c5341de7b6df5a2dc844bf4e7f"><td class="memItemLeft" align="right" valign="top">json&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a0585c7c5341de7b6df5a2dc844bf4e7f">dic</a> = json.loads(<a class="el" href="namespaceparser.html#aa1b427d239b092924b3fda101d71fb66">all_str</a>)</td></tr>
 <tr class="memdesc:a0585c7c5341de7b6df5a2dc844bf4e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">dic is a dictionary that stores all the countries and the details regarding each.  <br /></td></tr>
 <tr class="separator:a0585c7c5341de7b6df5a2dc844bf4e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32958a6aefab99f8d1189f40cc742448"><td class="memItemLeft" align="right" valign="top">cur&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a32958a6aefab99f8d1189f40cc742448">country_name</a> = cur['properties']['ADMIN']</td></tr>
+<tr class="memitem:a32958a6aefab99f8d1189f40cc742448"><td class="memItemLeft" align="right" valign="top">cur&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a32958a6aefab99f8d1189f40cc742448">country_name</a> = cur['properties']['name']</td></tr>
 <tr class="memdesc:a32958a6aefab99f8d1189f40cc742448"><td class="mdescLeft">&#160;</td><td class="mdescRight">country_name is the name of the country  <br /></td></tr>
 <tr class="separator:a32958a6aefab99f8d1189f40cc742448"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30f656e0e547b1e9e1acff73a6aa2a08"><td class="memItemLeft" align="right" valign="top">cur&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a30f656e0e547b1e9e1acff73a6aa2a08">ls</a> = cur['geometry']['coordinates'][0]</td></tr>
-<tr class="memdesc:a30f656e0e547b1e9e1acff73a6aa2a08"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls is current list of coordinates of the country which can be accessed by country.country_name.  <br /></td></tr>
-<tr class="separator:a30f656e0e547b1e9e1acff73a6aa2a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8f9526a2e2101ff750b1bb4d4161b8d"><td class="memItemLeft" align="right" valign="top">cur&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#af8f9526a2e2101ff750b1bb4d4161b8d">ls</a> = cur['geometry']['coordinates'][0]</td></tr>
+<tr class="memdesc:af8f9526a2e2101ff750b1bb4d4161b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls is current list of coordinates of the country which can be accessed by country.country_name.  <br /></td></tr>
+<tr class="separator:af8f9526a2e2101ff750b1bb4d4161b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7390d64362d55273e8ff5b91bcacae4a"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a7390d64362d55273e8ff5b91bcacae4a">best</a> = list()</td></tr>
+<tr class="memdesc:a7390d64362d55273e8ff5b91bcacae4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">best is list with maximum number of coordinates in multipolygon countries  <br /></td></tr>
+<tr class="separator:a7390d64362d55273e8ff5b91bcacae4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ffac366e077165f14ad18eb05b61214"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a6ffac366e077165f14ad18eb05b61214">to_write</a> = []</td></tr>
 <tr class="memdesc:a6ffac366e077165f14ad18eb05b61214"><td class="mdescLeft">&#160;</td><td class="mdescRight">to_write is list used to write all the necessary details for the countries.  <br /></td></tr>
 <tr class="separator:a6ffac366e077165f14ad18eb05b61214"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -108,7 +111,21 @@ Variables</h2></td></tr>
 
 <p>all_str hold the whole string of countries. </p>
 
-<p class="definition">Definition at line <a class="el" href="parser_8py_source.html#l00003">3</a> of file <a class="el" href="parser_8py_source.html">parser.py</a>.</p>
+</div>
+</div>
+<a id="a7390d64362d55273e8ff5b91bcacae4a" name="a7390d64362d55273e8ff5b91bcacae4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7390d64362d55273e8ff5b91bcacae4a">&#9670;&#160;</a></span>best</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">cur parser.best = list()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>best is list with maximum number of coordinates in multipolygon countries </p>
 
 </div>
 </div>
@@ -119,14 +136,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">cur parser.country_name = cur['properties']['ADMIN']</td>
+          <td class="memname">cur parser.country_name = cur['properties']['name']</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>country_name is the name of the country </p>
-
-<p class="definition">Definition at line <a class="el" href="parser_8py_source.html#l00011">11</a> of file <a class="el" href="parser_8py_source.html">parser.py</a>.</p>
 
 </div>
 </div>
@@ -144,25 +159,21 @@ Variables</h2></td></tr>
 
 <p>dic is a dictionary that stores all the countries and the details regarding each. </p>
 
-<p class="definition">Definition at line <a class="el" href="parser_8py_source.html#l00007">7</a> of file <a class="el" href="parser_8py_source.html">parser.py</a>.</p>
-
 </div>
 </div>
-<a id="a30f656e0e547b1e9e1acff73a6aa2a08" name="a30f656e0e547b1e9e1acff73a6aa2a08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30f656e0e547b1e9e1acff73a6aa2a08">&#9670;&#160;</a></span>ls</h2>
+<a id="af8f9526a2e2101ff750b1bb4d4161b8d" name="af8f9526a2e2101ff750b1bb4d4161b8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8f9526a2e2101ff750b1bb4d4161b8d">&#9670;&#160;</a></span>ls</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">cur parser.ls = cur['geometry']['coordinates'][0]</td>
+          <td class="memname">list parser.ls = cur['geometry']['coordinates'][0]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>ls is current list of coordinates of the country which can be accessed by country.country_name. </p>
-
-<p class="definition">Definition at line <a class="el" href="parser_8py_source.html#l00013">13</a> of file <a class="el" href="parser_8py_source.html">parser.py</a>.</p>
 
 </div>
 </div>
@@ -179,8 +190,6 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>to_write is list used to write all the necessary details for the countries. </p>
-
-<p class="definition">Definition at line <a class="el" href="parser_8py_source.html#l00018">18</a> of file <a class="el" href="parser_8py_source.html">parser.py</a>.</p>
 
 </div>
 </div>

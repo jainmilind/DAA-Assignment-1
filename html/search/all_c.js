@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['parser_0',['parser',['../namespaceparser.html',1,'']]],
-  ['parser_2epy_1',['parser.py',['../parser_8py.html',1,'']]],
-  ['prev_2',['prev',['../class_half_edge.html#a02bbf630ad01fd4d7bf4af38e286844e',1,'HalfEdge']]],
-  ['print_3',['print',['../class_d_c_e_l.html#a9699210170686f652178211b4ce991f8',1,'DCEL']]]
+  ['off_5fset_0',['off_set',['../visualiser_8cpp.html#a42bf33cd953b0cac9ca064a224df9b93',1,'visualiser.cpp']]],
+  ['onsameside_1',['onSameSide',['../utils_8cpp.html#a5e78f1453b4cbcca4702944041554d63',1,'utils.cpp']]],
+  ['org_2',['org',['../class_half_edge.html#a70cb2ff681260609d3f19099e0a5f114',1,'HalfEdge']]]
 ];

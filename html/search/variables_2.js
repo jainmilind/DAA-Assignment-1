@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['dic_0',['dic',['../namespaceparser.html#a0585c7c5341de7b6df5a2dc844bf4e7f',1,'parser']]]
+  ['corr_0',['corr',['../class_d_c_e_l.html#a1db95f08c809a8a5501a141a316176e0',1,'DCEL']]],
+  ['country_5fname_1',['country_name',['../namespaceparser.html#a32958a6aefab99f8d1189f40cc742448',1,'parser']]]
 ];

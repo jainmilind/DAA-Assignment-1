@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['inf_0',['inf',['../utils_8cpp.html#a299364ad52ca5587f292619167df8f55',1,'utils.cpp']]]
+  ['face_0',['face',['../class_half_edge.html#a08080cb14f0da4274e47a56f24071196',1,'HalfEdge']]],
+  ['faces_1',['faces',['../class_d_c_e_l.html#a2fb6e6d1ad70c5a1eb299459b44504e7',1,'DCEL']]]
 ];

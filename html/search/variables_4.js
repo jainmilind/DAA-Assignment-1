@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['face_0',['face',['../class_half_edge.html#a08080cb14f0da4274e47a56f24071196',1,'HalfEdge']]],
-  ['faces_1',['faces',['../class_d_c_e_l.html#a2fb6e6d1ad70c5a1eb299459b44504e7',1,'DCEL']]]
+  ['edge_0',['edge',['../class_face.html#a92c80d451252fe71136aaef224f1853b',1,'Face']]],
+  ['edges_1',['edges',['../class_d_c_e_l.html#aa8d36239f0e11317b453e7e4cb9e8767',1,'DCEL']]]
 ];

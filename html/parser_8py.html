@@ -79,8 +79,6 @@ $(function() {
   <div class="headertitle"><div class="title">parser.py File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p><a href="parser_8py_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -95,12 +93,15 @@ Variables</h2></td></tr>
 <tr class="memitem:a0585c7c5341de7b6df5a2dc844bf4e7f"><td class="memItemLeft" align="right" valign="top">json&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a0585c7c5341de7b6df5a2dc844bf4e7f">parser.dic</a> = json.loads(all_str)</td></tr>
 <tr class="memdesc:a0585c7c5341de7b6df5a2dc844bf4e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">dic is a dictionary that stores all the countries and the details regarding each.  <br /></td></tr>
 <tr class="separator:a0585c7c5341de7b6df5a2dc844bf4e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32958a6aefab99f8d1189f40cc742448"><td class="memItemLeft" align="right" valign="top">cur&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a32958a6aefab99f8d1189f40cc742448">parser.country_name</a> = cur['properties']['ADMIN']</td></tr>
+<tr class="memitem:a32958a6aefab99f8d1189f40cc742448"><td class="memItemLeft" align="right" valign="top">cur&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a32958a6aefab99f8d1189f40cc742448">parser.country_name</a> = cur['properties']['name']</td></tr>
 <tr class="memdesc:a32958a6aefab99f8d1189f40cc742448"><td class="mdescLeft">&#160;</td><td class="mdescRight">country_name is the name of the country  <br /></td></tr>
 <tr class="separator:a32958a6aefab99f8d1189f40cc742448"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30f656e0e547b1e9e1acff73a6aa2a08"><td class="memItemLeft" align="right" valign="top">cur&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a30f656e0e547b1e9e1acff73a6aa2a08">parser.ls</a> = cur['geometry']['coordinates'][0]</td></tr>
-<tr class="memdesc:a30f656e0e547b1e9e1acff73a6aa2a08"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls is current list of coordinates of the country which can be accessed by country.country_name.  <br /></td></tr>
-<tr class="separator:a30f656e0e547b1e9e1acff73a6aa2a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8f9526a2e2101ff750b1bb4d4161b8d"><td class="memItemLeft" align="right" valign="top">cur&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#af8f9526a2e2101ff750b1bb4d4161b8d">parser.ls</a> = cur['geometry']['coordinates'][0]</td></tr>
+<tr class="memdesc:af8f9526a2e2101ff750b1bb4d4161b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ls is current list of coordinates of the country which can be accessed by country.country_name.  <br /></td></tr>
+<tr class="separator:af8f9526a2e2101ff750b1bb4d4161b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7390d64362d55273e8ff5b91bcacae4a"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a7390d64362d55273e8ff5b91bcacae4a">parser.best</a> = list()</td></tr>
+<tr class="memdesc:a7390d64362d55273e8ff5b91bcacae4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">best is list with maximum number of coordinates in multipolygon countries  <br /></td></tr>
+<tr class="separator:a7390d64362d55273e8ff5b91bcacae4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ffac366e077165f14ad18eb05b61214"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceparser.html#a6ffac366e077165f14ad18eb05b61214">parser.to_write</a> = []</td></tr>
 <tr class="memdesc:a6ffac366e077165f14ad18eb05b61214"><td class="mdescLeft">&#160;</td><td class="mdescRight">to_write is list used to write all the necessary details for the countries.  <br /></td></tr>
 <tr class="separator:a6ffac366e077165f14ad18eb05b61214"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -94,8 +94,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6c0ccc276d905c3e493a137236f2e8de"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which splits the face into two faces.  <br /></td></tr>
 <tr class="separator:a6c0ccc276d905c3e493a137236f2e8de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab55c8d8c7a1a3e218b2ad59599e50601"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_face.html">Face</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_c_e_l.html#ab55c8d8c7a1a3e218b2ad59599e50601">unite</a> (<a class="el" href="class_half_edge.html">HalfEdge</a> *)</td></tr>
-<tr class="memdesc:ab55c8d8c7a1a3e218b2ad59599e50601"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which unites two faces into a single face.  <br /></td></tr>
+<tr class="memdesc:ab55c8d8c7a1a3e218b2ad59599e50601"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which unites two faces into a single face by taking a <a class="el" href="class_half_edge.html" title="This is a class representing a HalfEdge.">HalfEdge</a> as input.  <br /></td></tr>
 <tr class="separator:ab55c8d8c7a1a3e218b2ad59599e50601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16350e0cff544b4d8ff6319227cadf20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_face.html">Face</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_c_e_l.html#a16350e0cff544b4d8ff6319227cadf20">unite</a> (<a class="el" href="class_face.html">Face</a> *, <a class="el" href="class_face.html">Face</a> *)</td></tr>
+<tr class="memdesc:a16350e0cff544b4d8ff6319227cadf20"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which unites two faces into a single face by taking 2 faces as input.  <br /></td></tr>
+<tr class="separator:a16350e0cff544b4d8ff6319227cadf20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9699210170686f652178211b4ce991f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_c_e_l.html#a9699210170686f652178211b4ce991f8">print</a> ()</td></tr>
 <tr class="memdesc:a9699210170686f652178211b4ce991f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which prints the vertices of the <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a>.  <br /></td></tr>
 <tr class="separator:a9699210170686f652178211b4ce991f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,8 +117,6 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is a class representing a <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="_d_c_e_l_8h_source.html#l00121">121</a> of file <a class="el" href="_d_c_e_l_8h_source.html">DCEL.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5f12fccd0a8f0cd3450a21e9a2fafbd8" name="a5f12fccd0a8f0cd3450a21e9a2fafbd8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f12fccd0a8f0cd3450a21e9a2fafbd8">&#9670;&#160;</a></span>DCEL() <span class="overload">[1/2]</span></h2>
@@ -133,8 +134,6 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>This is a default constructor of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class. </p>
-
-<p class="definition">Definition at line <a class="el" href="_d_c_e_l_8cpp_source.html#l00010">10</a> of file <a class="el" href="_d_c_e_l_8cpp_source.html">DCEL.cpp</a>.</p>
 
 </div>
 </div>
@@ -163,8 +162,6 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_d_c_e_l_8cpp_source.html#l00138">138</a> of file <a class="el" href="_d_c_e_l_8cpp_source.html">DCEL.cpp</a>.</p>
-
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -185,8 +182,6 @@ Public Attributes</h2></td></tr>
 
 <p>This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which prints the vertices of the <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a>. </p>
 <p>This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class It prints the vertices of the <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="_d_c_e_l_8cpp_source.html#l00240">240</a> of file <a class="el" href="_d_c_e_l_8cpp_source.html">DCEL.cpp</a>.</p>
 
 </div>
 </div>
@@ -226,12 +221,48 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_d_c_e_l_8cpp_source.html#l00165">165</a> of file <a class="el" href="_d_c_e_l_8cpp_source.html">DCEL.cpp</a>.</p>
+</div>
+</div>
+<a id="a16350e0cff544b4d8ff6319227cadf20" name="a16350e0cff544b4d8ff6319227cadf20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16350e0cff544b4d8ff6319227cadf20">&#9670;&#160;</a></span>unite() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_face.html">Face</a> * DCEL::unite </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_face.html">Face</a> *&#160;</td>
+          <td class="paramname"><em>f1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_face.html">Face</a> *&#160;</td>
+          <td class="paramname"><em>f2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which unites two faces into a single face by taking 2 faces as input. </p>
+<p>This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class It takes two faces as input and merges two faces into one.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f1</td><td>First face </td></tr>
+    <tr><td class="paramname">f2</td><td>Second face </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <a id="ab55c8d8c7a1a3e218b2ad59599e50601" name="ab55c8d8c7a1a3e218b2ad59599e50601"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab55c8d8c7a1a3e218b2ad59599e50601">&#9670;&#160;</a></span>unite()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab55c8d8c7a1a3e218b2ad59599e50601">&#9670;&#160;</a></span>unite() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -246,7 +277,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which unites two faces into a single face. </p>
+<p>This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which unites two faces into a single face by taking a <a class="el" href="class_half_edge.html" title="This is a class representing a HalfEdge.">HalfEdge</a> as input. </p>
 <p>This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class It takes a <a class="el" href="class_half_edge.html" title="This is a class representing a HalfEdge.">HalfEdge</a> as input and merges two faces into one.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -255,8 +286,6 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>single face after merging </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="_d_c_e_l_8cpp_source.html#l00215">215</a> of file <a class="el" href="_d_c_e_l_8cpp_source.html">DCEL.cpp</a>.</p>
 
 </div>
 </div>
@@ -275,8 +304,6 @@ Public Attributes</h2></td></tr>
 
 <p>This is the list of coordinates of the <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_d_c_e_l_8h_source.html#l00131">131</a> of file <a class="el" href="_d_c_e_l_8h_source.html">DCEL.h</a>.</p>
-
 </div>
 </div>
 <a id="aa8d36239f0e11317b453e7e4cb9e8767" name="aa8d36239f0e11317b453e7e4cb9e8767"></a>
@@ -292,8 +319,6 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>This is the list of all halfedges present in the <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="_d_c_e_l_8h_source.html#l00127">127</a> of file <a class="el" href="_d_c_e_l_8h_source.html">DCEL.h</a>.</p>
 
 </div>
 </div>
@@ -311,13 +336,11 @@ Public Attributes</h2></td></tr>
 
 <p>This is the list of all faces present in <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_d_c_e_l_8h_source.html#l00135">135</a> of file <a class="el" href="_d_c_e_l_8h_source.html">DCEL.h</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>DCEL/<a class="el" href="_d_c_e_l_8h_source.html">DCEL.h</a></li>
-<li>DCEL/<a class="el" href="_d_c_e_l_8cpp_source.html">DCEL.cpp</a></li>
+<li>DCEL/<a class="el" href="_d_c_e_l_8cpp.html">DCEL.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
