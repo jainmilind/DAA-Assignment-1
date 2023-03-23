@@ -14,7 +14,7 @@ int main()
     usize n;
     cin >> n;
     string colors[] = {
-        "red", "blue", "green", "black", "white", "yellow", "cyan", "magenta", "gray", "grey", "darkgray", "darkgrey", "lightgray", "lightgrey", "orange", "purple", "pink", "brown"};
+        "red", "blue", "green", "yellow", "cyan", "magenta", "gray","orange", "purple", "pink", "brown"};
     string out = "<svg height='210' width='500'>\n";
     for (usize polygon = 1; polygon <= n; polygon++)
     {

@@ -16,6 +16,8 @@ void decompose_mp1(DCEL &polygon)
     int m = 1;
     int n = polygon.corr.size();
 
+    std::cerr << "Number of notches: " << get_notches(polygon.faces[0]).size() << std::endl;
+
     while (n > 3)
     {
         std::vector<Vertex *> v(n + 2);
@@ -33,12 +35,12 @@ void decompose_mp1(DCEL &polygon)
             i++;
             v[i + 1] = getNextVertex(v[i], polygon.faces[0]);
         }
-
+        
         if (l[m].size() != n)
         {
             std::set<Vertex *> cur_notches = get_notches(polygon.faces[0]);
+            
             for (Vertex *now : l[m])
-                // if (cur_notches.count(now))
                 cur_notches.erase(now);
 
             std::deque<Vertex *> lpvs(cur_notches.begin(), cur_notches.end());
@@ -217,11 +219,21 @@ int main()
     decompose_mp1(polygon);
     auto stopDecompose = std::chrono::high_resolution_clock::now();
     auto decomposeTime = std::chrono::duration_cast<std::chrono::microseconds>(stopDecompose - startDecompose);
+    std::cerr << "Number of vertices: " << n << std::endl;
+    int cnt_faces = 0;
+    for (Face *f : polygon.faces)
+        cnt_faces += f->edge != NULL;
+    std::cerr << "Number of faces after decomposition: " << cnt_faces << std::endl;
 
     auto startMerge = std::chrono::high_resolution_clock::now();
     merge_polygon(polygon);
     auto stopMerge = std::chrono::high_resolution_clock::now();
     auto mergeTime = std::chrono::duration_cast<std::chrono::microseconds>(stopMerge - startMerge);
+
+    cnt_faces = 0;
+    for (Face *f : polygon.faces)
+        cnt_faces += f->edge != NULL;
+    std::cerr << "Number of faces after merging: " << cnt_faces << std::endl;
 
     std::cerr << std::setprecision(10) << "Time for decomposing is: " << (double)decomposeTime.count() / 1000 << " ms" << std::endl;
     std::cerr << std::setprecision(10) << "Time for merging is: " << (double)mergeTime.count() / 1000 << " ms" << std::endl;
