@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['inf_0',['inf',['../utils_8cpp.html#a299364ad52ca5587f292619167df8f55',1,'utils.cpp']]]
+  ['g_0',['g',['../namespaceplot.html#a0cb0e7f5245a50f604ee3d8770f009dc',1,'plot']]]
 ];

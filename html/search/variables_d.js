@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ux_0',['ux',['../class_rectangle.html#a21559d2a68811e44841140b4d45ccb11',1,'Rectangle']]],
-  ['uy_1',['uy',['../class_rectangle.html#a01e9e2bbbe16e934f1d8a3c808d56811',1,'Rectangle']]]
+  ['r_0',['r',['../namespaceplot.html#a6f41b46c53da5c77bba5ab62a5b46073',1,'plot']]],
+  ['rgb_1',['rgb',['../namespaceplot.html#a7898308e7d4078195535aec7b27892fb',1,'plot']]]
 ];

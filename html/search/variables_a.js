@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['prev_0',['prev',['../class_half_edge.html#a02bbf630ad01fd4d7bf4af38e286844e',1,'HalfEdge']]]
+  ['n_0',['n',['../namespaceplot.html#aeabe775b80139720c10daeb277574587',1,'plot']]],
+  ['nxt_1',['nxt',['../class_half_edge.html#a87c8a63e07aebc0ba307b3faed1989dc',1,'HalfEdge']]]
 ];

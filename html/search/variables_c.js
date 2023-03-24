@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['to_5fwrite_0',['to_write',['../namespaceparser.html#a6ffac366e077165f14ad18eb05b61214',1,'parser']]],
-  ['twin_1',['twin',['../class_half_edge.html#a37e7696a7131767a0c76e45ed69be4c5',1,'HalfEdge']]]
+  ['poly_0',['poly',['../namespaceplot.html#ae89c2ce17a973acd14a32b937bad6848',1,'plot']]],
+  ['prev_1',['prev',['../class_half_edge.html#a02bbf630ad01fd4d7bf4af38e286844e',1,'HalfEdge']]]
 ];
