@@ -14678,8 +14678,8 @@ td, th {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Merging">Merging<a class="anchor-link" href="#Merging">&#182;</a></h3><p>When two convex polygons share a diagonal and follow few conditions, they can be combined to form a single polygon. Hence the diagonals in the partitions are not always necessary. For this reason, we've come up with a merging technique that may be applied following any partitioning method that results in superfluous diagonals.
-First, we defined lle which contains the list of all the diagonals. Then we defined a map, namely lp, which stores the key as a vertex and values as a set of pair of a vertex and a face. Then we initialized the lp with values. Then we define two more maps, namely ftoi which stores the face as the key and an integer as the value, and itof which stores an integer as the key and face as the value. Then we initialized ftoi, itof with the values. We store the number of polygons in np and m as np-1. Then we initialized ldp which tells if a polygon is present in the final polygon or not. Then we initialized lup which stores the polygon of which the current polygon is part of. Then we checked based on a few conditions in the paper, whether we could merge two polygons or not. If the condition is matched then we upgrade the values of ldp of those two polygons as false by making them false and then adding a true value for the new polygon formed. Then we upgrade the value of the two polygons in lup as it would be part of a new polygon and add a new value to a lup for the new polygon formed. When we merge 3 or more polygons into 1 we make sure that all the polygons belong to the new polygon formed by upgrading the value of lup. Then we make a new vector of faces having a list of final merged faces, and based on the value of ldp we add it to the list. Then we equate the present faces of polygon with the list of merged faces.<br> Time Complexity of merging is $O(n + p^2log p)$ ,where n is number of points in input and p is the number of polygons after decompostion.</p>
+<h3 id="Merging">Merging<a class="anchor-link" href="#Merging">&#182;</a></h3><p>When two convex polygons share a diagonal and can be merged to a convex polygon, they can be merged to form a single polygon. Hence the diagonals in the partitions are not always necessary. For this reason, we've come up with a merging technique that may be applied following any partitioning method that results in superfluous diagonals.
+First, we defined $lle$ which contains the list of all the diagonals. Then we defined a map, namely $lp$, which stores the key as a vertex and values as a set of pair of a vertex and a face. Then we define $ftoi$ which maps a face to an integer, and $itof$ which unmaps an integer to a face. We store the number of polygons in $np$ and the number of diagonals $m$ as $np-1$. Then we initialized $ldp$ which tells if a polygon is present in the final polygon or not. Then we initialized $lup$ which stores the polygon of which the current polygon is part of. Then we checked based on a few conditions in the paper, whether we could merge two polygons or not. If the condition is matched then we update the values of $ldp$ of those two polygons as $false$ as they are no longer part of merged polygon, and add the merged polygon into $ldp$ and initialize it to $true$. Then we update the value of the two polygons in $lup$ as it would be part of a new polygon and add a new value to a $lup$ for the new polygon formed. When we merge three or more polygons into one we make sure that all the polygons belong to the new polygon formed by updating the value of $lup$. Then we make a new list of faces having a list of final merged faces, and based on the value of $ldp$ we add it to the list. Then we update the faces of the polygon with the list of the merged faces.<br> Time Complexity of merging is $O(n + p^2log p)$ ,where n is number of points in input and p is the number of polygons after decompostion.</p>
 
 </div>
 </div>
@@ -14702,9 +14702,9 @@ table {
 <table>
 <thead>
 <tr>
-  <th style="text-align:center">Initial Polygon</th>
-  <th style="text-align:center">Decomposed Polygon</th>
-  <th style="text-align:center">Merged Polygon</th>
+  <th style="text-align:center"><strong>Initial Polygon</strong></th>
+  <th style="text-align:center"><strong>Decomposed Polygon</strong></th>
+  <th style="text-align:center"><strong>Merged Polygon</strong></th>
 </tr>
 </thead>
 <tbody>
@@ -14751,9 +14751,6 @@ table {
 <pre><code>void DCEL::split(Vertex *v1, Vertex *v2)
 </code></pre>
 <p>This function takes two vertices and splits the face based on the edge connecting both the vertices.<br> Time Complexity is $O(h)$ ,where h is number of points of polygon.</p>
-<pre><code>Face *DCEL::unite(Face *f1, Face *f2)
-</code></pre>
-<p>This function is used to combine two faces returns the final combined face.<br> Time Complexity is $O(h1+h2)$ ,where h1 and h2 is number of points in polygon 1 and 2 respectively.</p>
 <pre><code>Face *DCEL::unite(HalfEdge *e)
 </code></pre>
 <p>This function is used to combine two faces with an HalfEdge as input and it combine both the faces on either side of the HalfEdge and returns the final combined face.<br> Time Complexity is $O(h1+h2)$ ,where h1 and h2 is number of points in polygon 1 and 2 respectively.</p>
@@ -14786,7 +14783,7 @@ table {
 <pre><code>Face(HalfEdge *)
 </code></pre>
 <p>This is a parameterized constructor of Face class and takes HalfEdge as a paramter.<br> Time Complexity is $O(1)$.</p>
-<pre><code>std::vector&lt;Vertex *&gt; enumerate_all_vertices()
+<pre><code>std::vector&lt;Vertex *&gt; enumerateAllVertices()
 </code></pre>
 <p>This is a method in Face class It returns the list of all the vertices present in a face.<br> Time Complexity is $O(h)$ ,where h is number of points of polygon.</p>
 <h4 id="Public-Attributes">Public Attributes<a class="anchor-link" href="#Public-Attributes">&#182;</a></h4><pre><code>HalfEdge* edge = NULL
@@ -14922,7 +14919,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<pre><code>bool is_convex_angle(Vertex *v)
+<pre><code>bool isConvexAngle(Vertex *v)
 </code></pre>
 <p>This function is used to check if the given angle at a vertex is convex or not.<br> Time Complexity is $O(1)$.</p>
 
@@ -14936,7 +14933,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<pre><code>Rectangle get_rectangle(std::vector&lt;Vertex *&gt; &amp;vertices)
+<pre><code>Rectangle getRectangle(std::vector&lt;Vertex *&gt; &amp;vertices)
 </code></pre>
 <p>This function returns a rectangle that is the smallest rectangle enclosing all the veritices provided as input.<br> Time Complexity is $O(1)$.</p>
 
@@ -14950,7 +14947,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<pre><code>bool is_inside_rectangle(Rectangle &amp;rectangle, Vertex *v)
+<pre><code>bool isInsideRectangle(Rectangle &amp;rectangle, Vertex *v)
 </code></pre>
 <p>This function is used to check if a particular point is present in the rectangle.<br> Time Complexity is $O(1)$.</p>
 
@@ -14964,7 +14961,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<pre><code>bool is_inside_polygon(std::vector&lt;Vertex *&gt; &amp;polygon, Vertex *v)
+<pre><code>bool isInsidePolygon(std::vector&lt;Vertex *&gt; &amp;polygon, Vertex *v)
 </code></pre>
 <p>This function is used to check if a particular point is present a polygon generated by the given set of vertices.<br> Time Complexity is $O(h)$ ,where h is number of points of polygon.</p>
 
@@ -15006,7 +15003,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<pre><code>std::set&lt;Vertex *&gt; get_notches(Face *face)
+<pre><code>std::set&lt;Vertex *&gt; getNotches(Face *face)
 </code></pre>
 <p>This function is used to get the notches present in a face.<br> Time Complexity is $O(h)$ ,where h is number of points of polygon.</p>
 
@@ -15212,8 +15209,10 @@ Avg Time for merging is: 7.051 ms
   <th>Notches</th>
   <th>Polygons</th>
   <th>Avg Dec. time</th>
+  <th>Std Dec. time.</th>
   <th>Merg. poly.</th>
   <th>Avg Merg. time</th>
+  <th>Std Merg. time.</th>
 </tr>
 </thead>
 <tbody>
@@ -15223,7 +15222,9 @@ Avg Time for merging is: 7.051 ms
   <td>15</td>
   <td>19</td>
   <td>0.999 ms</td>
+  <td>0 ms</td>
   <td>16</td>
+  <td>0 ms</td>
   <td>0 ms</td>
 </tr>
 <tr>
@@ -15232,7 +15233,9 @@ Avg Time for merging is: 7.051 ms
   <td>46</td>
   <td>54</td>
   <td>2.306 ms</td>
+  <td>0 ms</td>
   <td>41</td>
+  <td>0 ms</td>
   <td>0 ms</td>
 </tr>
 <tr>
@@ -15241,8 +15244,10 @@ Avg Time for merging is: 7.051 ms
   <td>66</td>
   <td>75</td>
   <td>4.508 ms</td>
+  <td>0 ms</td>
   <td>53</td>
   <td>0.912 ms</td>
+  <td>0 ms</td>
 </tr>
 <tr>
   <td>USA</td>
@@ -15250,8 +15255,10 @@ Avg Time for merging is: 7.051 ms
   <td>111</td>
   <td>112</td>
   <td>13.549 ms</td>
+  <td>0 ms</td>
   <td>82</td>
   <td>2.055 ms</td>
+  <td>0 ms</td>
 </tr>
 <tr>
   <td>Canada</td>
@@ -15259,8 +15266,10 @@ Avg Time for merging is: 7.051 ms
   <td>130</td>
   <td>144</td>
   <td>15.01 ms</td>
+  <td>0 ms</td>
   <td>107</td>
   <td>1.007 ms</td>
+  <td>0 ms</td>
 </tr>
 <tr>
   <td>Russia</td>
@@ -15268,8 +15277,10 @@ Avg Time for merging is: 7.051 ms
   <td>215</td>
   <td>256</td>
   <td>46.874 ms</td>
+  <td>0 ms</td>
   <td>186</td>
   <td>7.051 ms</td>
+  <td>0 ms</td>
 </tr>
 </tbody>
 </table>
