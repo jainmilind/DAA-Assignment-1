@@ -227,36 +227,43 @@ void DCEL::split(Vertex *v1, Vertex *v2)
 
 /**
  * @brief This is a method of DCEL class
- * It takes a HalfEdge as input and merges two faces into one
- * @param e Half Edge
- * @return single face after merging
+ * It takes two faces as input and merges two faces into one
+ * @param f1 First face
+ * @param f2 Second face
  */
-Face *DCEL::unite(HalfEdge *e)
+Face *DCEL::unite(Face *f1, Face *f2)
 {
-    auto e1 = e->nxt;
-    auto e2 = e->prev;
-    auto e3 = e->twin->nxt;
-    auto e4 = e->twin->prev;
-
-    e->org->leave = e3;
-    e->twin->org->leave = e1;
-
-    e4->nxt = e1;
-    e1->prev = e4;
-
-    e2->nxt = e3;
-    e3->prev = e2;
-
-    e2->face->edge = NULL;
-
-    auto temp = e4;
+    HalfEdge *temp = f1->edge;
+    HalfEdge *remove;
     do
     {
-        temp->face = e4->face;
+        if (temp->twin->face == f2)
+        {
+            remove = temp;
+            break;
+        }
         temp = temp->nxt;
-    } while (temp != e4);
+    } while (temp != f1->edge);
 
-    return e4->face;
+    HalfEdge *e1 = remove->twin->prev;
+    HalfEdge *e2 = remove->twin->nxt;
+
+    remove->nxt->prev = e1;
+    e1->nxt = remove->nxt;
+    remove->prev->nxt = e2;
+    e2->prev = remove->prev;
+
+    Face *new_Face = new Face(e1);
+    temp = e1;
+    do
+    {
+        temp->face = new_Face;
+        temp = temp->nxt;
+    } while (temp != e1);
+
+    this->faces.push_back(new_Face);
+
+    return new_Face;
 }
 
 /**

@@ -148,9 +148,9 @@ public:
      */
     void split(Vertex *, Vertex *);
     /**
-     * @brief This is a method of DCEL class which unites two faces into a single face by taking a HalfEdge as input
+     * @brief This is a method of DCEL class which unites two faces into a single face by taking 2 faces as input
      */
-    Face *unite(HalfEdge *);
+    Face *unite(Face *, Face *);
     /**
      * @brief This is a method of DCEL class which prints the vertices of the DCEL
      */

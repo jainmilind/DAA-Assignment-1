@@ -14597,9 +14597,34 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="DAA-Assignment">DAA Assignment<a class="anchor-link" href="#DAA-Assignment">&#182;</a></h1><h2 id="Team-Members">Team Members<a class="anchor-link" href="#Team-Members">&#182;</a></h2><style>
+<center style="font-size: 30px">
+<h1 id="DAA-Assignment">DAA Assignment<a class="anchor-link" href="#DAA-Assignment">&#182;</a></h1></center>
+<ul>
+<li><a href="#team-members">Team Members</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#problem-statement">Problem Statement</a></li>
+<li><a href="#algorithm">Algorithm</a><ul>
+<li><a href="#decomposition">Decompostion</a></li>
+<li><a href="#merging">Merging</a></li>
+</ul>
+</li>
+<li><a href="#classes">Classes</a><ul>
+<li><a href="#dcel">DCEL</a></li>
+<li><a href="#face">Face</a></li>
+<li><a href="#halfedge">HalfEdge</a></li>
+<li><a href="#rectangle">Rectangle</a></li>
+<li><a href="#vertex">Vertex</a></li>
+</ul>
+</li>
+<li><a href="#helper-functions">Helper Functions</a></li>
+<li><a href="#analysis-and-conclusions">Analysis and Conclusions</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+<p><a name="team-members"></a></p>
+<h2 id="Team-Members">Team Members<a class="anchor-link" href="#Team-Members">&#182;</a></h2><style>
 td, th {
    border: none!important;
+   font-size: 20px;
 }
 </style>
 <table>
@@ -14639,6 +14664,7 @@ td, th {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="introduction"></a></p>
 <h2 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h2><p>A convex polygon is a closed two-dimensional shape that has straight sides and no angles pointing inward (i.e., all of its interior angles are less than 180 degrees). In other words, a convex polygon is a polygon where any line segment drawn between any two points inside the polygon lies entirely within the polygon. Some examples of convex polygons include triangles, squares, rectangles, pentagons, hexagons, and octagons.</p>
 <p>The most appropriate kind of sets into which the polygon can be decomposed is convex polygons, for both their easy analytical writing and good optimization properties.</p>
 <p>The algorithm uses a strategy called &quot;divide and conquer&quot; to solve the problem. A list of vertices provides the entire polygon that needs to be decomposed. After an initial vertex has been provided, a convex polygon of the partition is generated using a procedure and is cut off from the initial polygon. This process is repeated with the remaining polygon until it is convex, at which point it will be the final polygon of the partition. Then we merge the convex polygon such that after merging, it stays as a convex polygon only.</p>
@@ -14653,6 +14679,7 @@ td, th {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="problem-statement"></a></p>
 <h2 id="Problem-Statement">Problem Statement<a class="anchor-link" href="#Problem-Statement">&#182;</a></h2><p>We are supposed to implement the algorithm in the paper: <em>[1]Fernández, J., Cánovas, L., &amp; Pelegrın, B. (2000). Algorithms for the decomposition of a polygon into ́convex polygons. European Journal of Operational Research, 121(2), 330-342.</em></p>
 <p>We should build a data structure, namely Doubly Connected Edge Lists (DCEL) to store the polygon decompositions. The algorithms will help in decomposing an arbitrary polygon into a set of Convex polygons. We must test the code using many datasets and implement a small drawing application to visualize our output using Python Code.</p>
 
@@ -14666,7 +14693,9 @@ td, th {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Algorithm">Algorithm<a class="anchor-link" href="#Algorithm">&#182;</a></h2><h3 id="Decomposition">Decomposition<a class="anchor-link" href="#Decomposition">&#182;</a></h3><p>This takes a polygon stored in DCEL data structure format. It is used to decompose the polygon into convex polygons using the MP1 algorithm. First, we start with the initial vertex of the polygon. We perform the following operations while the size of the polygon is greater than 3 as a polygon with a size 3 or less cannot be decomposed further. $L[m]$ will denote the list L containing the vertices of the convex polygon at the m-th iteration. At a point, we check a few conditions based on angles mentioned in the paper to append the i-th vertex into  $L[m]$ such that it can contain not more than n elements. Then we get all the present notches (which are the vertices of a polygon displaying a reflex angle). We remove notches that are a part of $L[m]$. Then we make use of a deque, namely $lpvs$ which has all the current notches after the removal of the vertices. Then we form a rectangle of minimum area that encloses all the points of $L[m]$ and check for notches present inside this rectangle. For tyhe notches present in the rectangle, we check if the notch is present inside the polygon. If it is present inside, we form a semi-plane using the first vertex of $L[m]$ and the notch, and then remove all points that are on the same side as the last element of $L[m]$. We repeat the same for all the remaining vertices till there are no more notches present inside the polygon or if the polygon only contains two points(as a polygon should contain at least 3 points). Then we check if the polygon contains at least three points and it is not the entire polygon we split it and update n accordingly.<br> Time Complexity of decompostion is $O(n^2logn)$ ,where n is number of points in input.</p>
+<p><a name="algorithm"></a></p>
+<h2 id="Algorithm">Algorithm<a class="anchor-link" href="#Algorithm">&#182;</a></h2><p><a name="decomposition"></a></p>
+<h3 id="Decomposition">Decomposition<a class="anchor-link" href="#Decomposition">&#182;</a></h3><p>This takes a polygon stored in DCEL data structure format. It is used to decompose the polygon into convex polygons using the MP1 algorithm. First, we start with the initial vertex of the polygon. We perform the following operations while the size of the polygon is greater than 3 as a polygon with a size 3 or less cannot be decomposed further. $L[m]$ will denote the list L containing the vertices of the convex polygon at the m-th iteration. At a point, we check a few conditions based on angles mentioned in the paper to append the i-th vertex into $L[m]$ such that it can contain not more than n elements. Then we get all the present notches (which are the vertices of a polygon displaying a reflex angle). We remove notches that are a part of $L[m]$. Then we make use of a deque, namely $lpvs$ which has all the current notches after the removal of the vertices. Then we form a rectangle of minimum area that encloses all the points of $L[m]$ and check for notches present inside this rectangle. For tyhe notches present in the rectangle, we check if the notch is present inside the polygon. If it is present inside, we form a semi-plane using the first vertex of $L[m]$ and the notch, and then remove all points that are on the same side as the last element of $L[m]$. We repeat the same for all the remaining vertices till there are no more notches present inside the polygon or if the polygon only contains two points(as a polygon should contain at least 3 points). Then we check if the polygon contains at least three points and it is not the entire polygon we split it and update n accordingly.<br> Time Complexity of decompostion is $O(n^2logn)$ ,where n is number of points in input.</p>
 
 </div>
 </div>
@@ -14678,6 +14707,7 @@ td, th {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="merging"></a></p>
 <h3 id="Merging">Merging<a class="anchor-link" href="#Merging">&#182;</a></h3><p>When two convex polygons share a diagonal and can be merged to a convex polygon, they can be merged to form a single polygon. Hence the diagonals in the partitions are not always necessary. For this reason, we've come up with a merging technique that may be applied following any partitioning method that results in superfluous diagonals.
 First, we defined $lle$ which contains the list of all the diagonals. Then we defined a map, namely $lp$, which stores the key as a vertex and values as a set of pair of a vertex and a face. Then we define $ftoi$ which maps a face to an integer, and $itof$ which unmaps an integer to a face. We store the number of polygons in $np$ and the number of diagonals $m$ as $np-1$. Then we initialized $ldp$ which tells if a polygon is present in the final polygon or not. Then we initialized $lup$ which stores the polygon of which the current polygon is part of. Then we checked based on a few conditions in the paper, whether we could merge two polygons or not. If the condition is matched then we update the values of $ldp$ of those two polygons as $false$ as they are no longer part of merged polygon, and add the merged polygon into $ldp$ and initialize it to $true$. Then we update the value of the two polygons in $lup$ as it would be part of a new polygon and add a new value to a $lup$ for the new polygon formed. When we merge three or more polygons into one we make sure that all the polygons belong to the new polygon formed by updating the value of $lup$. Then we make a new list of faces having a list of final merged faces, and based on the value of $ldp$ we add it to the list. Then we update the faces of the polygon with the list of the merged faces.<br> Time Complexity of merging is $O(n + p^2log p)$ ,where n is number of points in input and p is the number of polygons after decompostion.</p>
 
@@ -14709,9 +14739,9 @@ table {
 </thead>
 <tbody>
 <tr>
-  <td style="text-align:center"><img src="polygon.png" height="300" width="300"/></td>
-  <td style="text-align:center"><img src="decompose.png" height="300" width="300"/></td>
-  <td style="text-align:center"><img src="merge.png" height="300" width="300"/></td>
+  <td style="text-align:center"><img src="images/pngs/polygon.png" height="300" width="300"/></td>
+  <td style="text-align:center"><img src="images/pngs/decompose.png" height="300" width="300"/></td>
+  <td style="text-align:center"><img src="images/pngs/merge.png" height="300" width="300"/></td>
 </tr>
 <tr>
   <td style="text-align:center">This is the polygon before Decomposition.</td>
@@ -14731,6 +14761,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="classes"></a></p>
 <h2 id="Classes">Classes<a class="anchor-link" href="#Classes">&#182;</a></h2>
 </div>
 </div>
@@ -14742,18 +14773,19 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="dcel"></a></p>
 <h3 id="DCEL">DCEL<a class="anchor-link" href="#DCEL">&#182;</a></h3><h4 id="Public-Member-Functions">Public Member Functions<a class="anchor-link" href="#Public-Member-Functions">&#182;</a></h4><pre><code>DCEL()
 </code></pre>
 <p>This is a default constructor of DCEL class.<br> Time Complexity is $O(1)$.</p>
-<pre><code>DCEL(std::vector&lt;std::pair&lt;double,double&gt; &gt; &amp;) 
+<pre><code>DCEL(std::vector&lt;std::pair&lt;double,double&gt; &gt; &amp;)
 </code></pre>
 <p>This is a constructor of DCEL class which constructs DCEL with all the vertices. <br> Time complexity is $O(n)$ ,where n is number of points in input.</p>
 <pre><code>void DCEL::split(Vertex *v1, Vertex *v2)
 </code></pre>
 <p>This function takes two vertices and splits the face based on the edge connecting both the vertices.<br> Time Complexity is $O(h)$ ,where h is number of points of polygon.</p>
-<pre><code>Face *DCEL::unite(HalfEdge *e)
+<pre><code>Face *DCEL::unite(Face *f1, Face *f2)
 </code></pre>
-<p>This function is used to combine two faces with an HalfEdge as input and it combine both the faces on either side of the HalfEdge and returns the final combined face.<br> Time Complexity is $O(h1+h2)$ ,where h1 and h2 is number of points in polygon 1 and 2 respectively.</p>
+<p>This function is used to combine two faces and returns the final combined face.<br> Time Complexity is $O(h1+h2)$ ,where h1 and h2 is number of points in polygon 1 and 2 respectively.</p>
 <pre><code>void DCEL::print()
 </code></pre>
 <p>It function is used to prints all the vertices of the DCEL.<br> Time Complexity is $O(n)$ ,where n is number of points in input.</p>
@@ -14777,6 +14809,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="face"></a></p>
 <h3 id="Face">Face<a class="anchor-link" href="#Face">&#182;</a></h3><h4 id="Public-Member-Functions">Public Member Functions<a class="anchor-link" href="#Public-Member-Functions">&#182;</a></h4><pre><code>Face()
 </code></pre>
 <p>This is a default constructor of Face class.<br> Time Complexity is $O(1)$.</p>
@@ -14800,6 +14833,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="halfedge"></a></p>
 <h3 id="HalfEdge">HalfEdge<a class="anchor-link" href="#HalfEdge">&#182;</a></h3><h4 id="Public-Member-Functions">Public Member Functions<a class="anchor-link" href="#Public-Member-Functions">&#182;</a></h4><pre><code>HalfEdge()
 </code></pre>
 <p>This is a default constructor of HalfEdge class.<br> Time Complexity is $O(1)$.</p>
@@ -14838,6 +14872,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="rectangle"></a></p>
 <h3 id="Rectangle">Rectangle<a class="anchor-link" href="#Rectangle">&#182;</a></h3><h4 id="Public-Member-Functions">Public Member Functions<a class="anchor-link" href="#Public-Member-Functions">&#182;</a></h4><pre><code>Rectangle()
 </code></pre>
 <p>This is a default constructor of Rectangle class.<br> Time Complexity is $O(1)$.</p>
@@ -14867,6 +14902,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="vertex"></a></p>
 <h3 id="Vertex">Vertex<a class="anchor-link" href="#Vertex">&#182;</a></h3><h4 id="Public-Member-Functions">Public Member Functions<a class="anchor-link" href="#Public-Member-Functions">&#182;</a></h4><pre><code>Vertex ()
 </code></pre>
 <p>This is a default constructor of Vertex class.<br> Time Complexity is $O(1)$.</p>
@@ -14893,6 +14929,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="helper-function"></a></p>
 <h2 id="Helper-Functions">Helper Functions<a class="anchor-link" href="#Helper-Functions">&#182;</a></h2>
 </div>
 </div>
@@ -14906,7 +14943,7 @@ table {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <pre><code>double angle(Vertex *a, Vertex *b, Vertex *c)
 </code></pre>
-<p>his function is used to calculate the angle in degrees formed between 3 verticles in the anti-clockwise direction with pivot as the middle vertex 
+<p>his function is used to calculate the angle in degrees formed between 3 verticles in the anti-clockwise direction with pivot as the middle vertex
 <br>Time complexity is $O(1)$.</p>
 
 </div>
@@ -14935,7 +14972,7 @@ table {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <pre><code>Rectangle getRectangle(std::vector&lt;Vertex *&gt; &amp;vertices)
 </code></pre>
-<p>This function returns a rectangle that is the smallest rectangle enclosing all the veritices provided as input.<br> Time Complexity is $O(1)$.</p>
+<p>This function returns a rectangle that is the smallest rectangle enclosing all the veritices provided as input.<br> Time Complexity is $O(n)$, where n is the number of vertices to be enclosed.</p>
 
 </div>
 </div>
@@ -15059,6 +15096,7 @@ table {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="analysis-and-conclusions"></a></p>
 <h2 id="Analysis-and-Conclusions">Analysis and Conclusions<a class="anchor-link" href="#Analysis-and-Conclusions">&#182;</a></h2>
 </div>
 </div>
@@ -15086,13 +15124,13 @@ table {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4>Japan: <br></h4>
-<img src="Japan.png" align="right" height="150" width="200"/>
+<img src="images/pngs/Japan.png" align="right" height="150" width="200"/>
 Number of notches: 15 <br>
 Number of vertices: 37 <br>
 Number of faces after decomposition: 19 <br>
 Number of faces after merging: 16 <br>
-Avg Time for decomposing is: 0.999 ms <br>
-Avg Time for merging is: 0 ms
+Avg Time for decomposing is: 1.2466 ms <br>
+Avg Time for merging is: 0.2 ms
 
 </div>
 </div>
@@ -15105,13 +15143,13 @@ Avg Time for merging is: 0 ms
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4>Ukraine: <br></h4>
-<img src="Ukraine.png" align="right" height="200" width="300"/>
+<img src="images/pngs/Ukraine.png" align="right" height="200" width="300"/>
 Number of notches: 46 <br>
 Number of vertices: 98 <br>
 Number of faces after decomposition: 54 <br>
 Number of faces after merging: 41 <br>
-Avg Time for decomposing is: 2.306 ms <br>
-Avg Time for merging is: 0 ms
+Avg Time for decomposing is: 2.733 ms <br>
+Avg Time for merging is: 0.41 ms
 
 </div>
 </div>
@@ -15124,13 +15162,13 @@ Avg Time for merging is: 0 ms
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4>India: <br></h4>
-<img src="India.png" align="right" height="150" width="150"/>
+<img src="images/pngs/India.png" align="right" height="150" width="150"/>
 Number of notches: 66 <br>
 Number of vertices: 136 <br>
 Number of faces after decomposition: 75 <br>
 Number of faces after merging: 53 <br>
-Avg Time for decomposing is: 4.508 ms <br>
-Avg Time for merging is: 0.912 ms
+Avg Time for decomposing is: 3.9044 ms <br>
+Avg Time for merging is: 0.7936 ms
 
 </div>
 </div>
@@ -15143,7 +15181,7 @@ Avg Time for merging is: 0.912 ms
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4>USA: <br></h4>
-<img src="USA.png" align="right" height="200" width="300"/>
+<img src="images/pngs/USA.png" align="right" height="200" width="300"/>
 Number of notches: 111 <br>
 Number of vertices: 233 <br>
 Number of faces after decomposition: 112 <br>
@@ -15162,13 +15200,13 @@ Avg Time for merging is: 2.055 ms
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4>Canada: <br></h4>
-<img src="Canada.png" align="right" height="200" width="300"/>
+<img src="images/pngs/Canada.png" align="right" height="200" width="300"/>
 Number of notches: 130 <br>
 Number of vertices: 272 <br>
 Number of faces after decomposition: 144 <br>
 Number of faces after merging: 107 <br>
-Avg Time for decomposing is: 15.01 ms <br>
-Avg Time for merging is: 1.007 ms
+Avg Time for decomposing is: 14.476 ms <br>
+Avg Time for merging is: 2.1638 ms
 
 </div>
 </div>
@@ -15181,13 +15219,13 @@ Avg Time for merging is: 1.007 ms
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4>Russia: <br></h4>
-<img src="Russia.png" align="right" height="150" width="300"/>
+<img src="images/pngs/Russia.png" align="right" height="150" width="300"/>
 Number of notches: 215 <br>
 Number of vertices: 447 <br>
 Number of faces after decomposition: 256 <br>
 Number of faces after merging: 186 <br>
-Avg Time for decomposing is: 46.874 ms <br>
-Avg Time for merging is: 7.051 ms
+Avg Time for decomposing is: 34.466 ms <br>
+Avg Time for merging is: 6.4668 ms
 <br>
 <br>
 
@@ -15221,33 +15259,33 @@ Avg Time for merging is: 7.051 ms
   <td>37</td>
   <td>15</td>
   <td>19</td>
-  <td>0.999 ms</td>
-  <td>0 ms</td>
+  <td>1.2466 ms</td>
+  <td>0.535 ms</td>
   <td>16</td>
-  <td>0 ms</td>
-  <td>0 ms</td>
+  <td>0.2 ms</td>
+  <td>0.447 ms</td>
 </tr>
 <tr>
   <td>Ukraine</td>
   <td>98</td>
   <td>46</td>
   <td>54</td>
-  <td>2.306 ms</td>
-  <td>0 ms</td>
+  <td>2.733 ms</td>
+  <td>0.816 ms</td>
   <td>41</td>
-  <td>0 ms</td>
-  <td>0 ms</td>
+  <td>0.41 ms</td>
+  <td>0.562 ms</td>
 </tr>
 <tr>
   <td>India</td>
   <td>136</td>
   <td>66</td>
   <td>75</td>
-  <td>4.508 ms</td>
-  <td>0 ms</td>
+  <td>3.9044 ms</td>
+  <td>0.419 ms</td>
   <td>53</td>
-  <td>0.912 ms</td>
-  <td>0 ms</td>
+  <td>0.7936 ms</td>
+  <td>0.444 ms</td>
 </tr>
 <tr>
   <td>USA</td>
@@ -15255,32 +15293,32 @@ Avg Time for merging is: 7.051 ms
   <td>111</td>
   <td>112</td>
   <td>13.549 ms</td>
-  <td>0 ms</td>
+  <td>0.513 ms</td>
   <td>82</td>
   <td>2.055 ms</td>
-  <td>0 ms</td>
+  <td>0.253 ms</td>
 </tr>
 <tr>
   <td>Canada</td>
   <td>272</td>
   <td>130</td>
   <td>144</td>
-  <td>15.01 ms</td>
-  <td>0 ms</td>
+  <td>14.476 ms</td>
+  <td>0.639 ms</td>
   <td>107</td>
-  <td>1.007 ms</td>
-  <td>0 ms</td>
+  <td>2.1638 ms</td>
+  <td>0.266 ms</td>
 </tr>
 <tr>
   <td>Russia</td>
   <td>447</td>
   <td>215</td>
   <td>256</td>
-  <td>46.874 ms</td>
-  <td>0 ms</td>
+  <td>34.466 ms</td>
+  <td>1.189 ms</td>
   <td>186</td>
-  <td>7.051 ms</td>
-  <td>0 ms</td>
+  <td>6.4668 ms</td>
+  <td>0.533 ms</td>
 </tr>
 </tbody>
 </table>
@@ -15308,6 +15346,7 @@ We can conclude from our observations that as the number of vertices increases t
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><a name="references"></a></p>
 <h2 id="References">References<a class="anchor-link" href="#References">&#182;</a></h2><p><em>Fernández, J., Cánovas, L., &amp; Pelegrın, B. (2000). Algorithms for the decomposition of a polygon into convex polygons. European Journal of Operational Research, 121(2), 330-342.</em></p>
 <p><em>Mount, David M. &quot;CMSC 754 Computational geometry.&quot; Lecture Notes, University of Maryland (2002): 1-122.</em></p>
 

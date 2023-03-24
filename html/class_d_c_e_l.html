@@ -93,9 +93,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6c0ccc276d905c3e493a137236f2e8de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_c_e_l.html#a6c0ccc276d905c3e493a137236f2e8de">split</a> (<a class="el" href="class_vertex.html">Vertex</a> *, <a class="el" href="class_vertex.html">Vertex</a> *)</td></tr>
 <tr class="memdesc:a6c0ccc276d905c3e493a137236f2e8de"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which splits the face into two faces.  <br /></td></tr>
 <tr class="separator:a6c0ccc276d905c3e493a137236f2e8de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab55c8d8c7a1a3e218b2ad59599e50601"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_face.html">Face</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_c_e_l.html#ab55c8d8c7a1a3e218b2ad59599e50601">unite</a> (<a class="el" href="class_half_edge.html">HalfEdge</a> *)</td></tr>
-<tr class="memdesc:ab55c8d8c7a1a3e218b2ad59599e50601"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which unites two faces into a single face by taking a <a class="el" href="class_half_edge.html" title="This is a class representing a HalfEdge.">HalfEdge</a> as input.  <br /></td></tr>
-<tr class="separator:ab55c8d8c7a1a3e218b2ad59599e50601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16350e0cff544b4d8ff6319227cadf20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_face.html">Face</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_c_e_l.html#a16350e0cff544b4d8ff6319227cadf20">unite</a> (<a class="el" href="class_face.html">Face</a> *, <a class="el" href="class_face.html">Face</a> *)</td></tr>
+<tr class="memdesc:a16350e0cff544b4d8ff6319227cadf20"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which unites two faces into a single face by taking 2 faces as input.  <br /></td></tr>
+<tr class="separator:a16350e0cff544b4d8ff6319227cadf20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9699210170686f652178211b4ce991f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_c_e_l.html#a9699210170686f652178211b4ce991f8">print</a> ()</td></tr>
 <tr class="memdesc:a9699210170686f652178211b4ce991f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which prints the vertices of the <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a>.  <br /></td></tr>
 <tr class="separator:a9699210170686f652178211b4ce991f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,8 +220,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab55c8d8c7a1a3e218b2ad59599e50601" name="ab55c8d8c7a1a3e218b2ad59599e50601"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab55c8d8c7a1a3e218b2ad59599e50601">&#9670;&#160;</a></span>unite()</h2>
+<a id="a16350e0cff544b4d8ff6319227cadf20" name="a16350e0cff544b4d8ff6319227cadf20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16350e0cff544b4d8ff6319227cadf20">&#9670;&#160;</a></span>unite()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,22 +229,32 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="class_face.html">Face</a> * DCEL::unite </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_half_edge.html">HalfEdge</a> *&#160;</td>
-          <td class="paramname"><em>e</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_face.html">Face</a> *&#160;</td>
+          <td class="paramname"><em>f1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="class_face.html">Face</a> *&#160;</td>
+          <td class="paramname"><em>f2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which unites two faces into a single face by taking a <a class="el" href="class_half_edge.html" title="This is a class representing a HalfEdge.">HalfEdge</a> as input. </p>
-<p>This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class It takes a <a class="el" href="class_half_edge.html" title="This is a class representing a HalfEdge.">HalfEdge</a> as input and merges two faces into one.</p>
+<p>This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class which unites two faces into a single face by taking 2 faces as input. </p>
+<p>This is a method of <a class="el" href="class_d_c_e_l.html" title="This is a class representing a DCEL.">DCEL</a> class It takes two faces as input and merges two faces into one.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">e</td><td>Half Edge </td></tr>
+    <tr><td class="paramname">f1</td><td>First face </td></tr>
+    <tr><td class="paramname">f2</td><td>Second face </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>single face after merging </dd></dl>
 
 </div>
 </div>
