@@ -31,7 +31,7 @@ public:
      * It returns the list of all the vertices present in a face
      * @return list of vertices
      */
-    std::vector<Vertex *> enumerate_all_vertices();
+    std::vector<Vertex *> enumerateAllVertices();
 };
 
 /**
@@ -151,10 +151,6 @@ public:
      * @brief This is a method of DCEL class which unites two faces into a single face by taking a HalfEdge as input
      */
     Face *unite(HalfEdge *);
-    /**
-     * @brief This is a method of DCEL class which unites two faces into a single face by taking 2 faces as input
-     */
-    Face *unite(Face *, Face *);
     /**
      * @brief This is a method of DCEL class which prints the vertices of the DCEL
      */

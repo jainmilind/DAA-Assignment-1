@@ -31,7 +31,7 @@ Rectangle::Rectangle(double lx, double ly, double ux, double uy)
  * It returns the list of all the vertices present in a face
  * @return list of vertices
  */
-std::vector<Vertex *> Face::enumerate_all_vertices()
+std::vector<Vertex *> Face::enumerateAllVertices()
 {
     std::vector<Vertex *> vertices;
     HalfEdge *curr = this->edge;
@@ -114,11 +114,11 @@ HalfEdge::HalfEdge(HalfEdge *prev, HalfEdge *nxt)
     prev->twin->prev = this->twin;
     nxt->twin->nxt = this->twin;
 
-    Face *new_face = new Face(this);
+    Face *newFace = new Face(this);
     HalfEdge *temp = this;
     do
     {
-        temp->face = new_face;
+        temp->face = newFace;
         temp = temp->nxt;
     } while (temp != this);
 
@@ -211,59 +211,18 @@ void DCEL::split(Vertex *v1, Vertex *v2)
     e->twin->nxt = e2;
 
     e1->face->edge = e1;
-    Face *new_face = new Face(e);
+    Face *newFace = new Face(e);
     temp = e;
     do
     {
-        temp->face = new_face;
+        temp->face = newFace;
         temp = temp->nxt;
     } while (temp != e);
 
     this->edges.push_back(e);
-    this->faces.push_back(new_face);
+    this->faces.push_back(newFace);
 
     return;
-}
-
-/**
- * @brief This is a method of DCEL class
- * It takes two faces as input and merges two faces into one
- * @param f1 First face
- * @param f2 Second face
- */
-Face *DCEL::unite(Face *f1, Face *f2)
-{
-    HalfEdge *temp = f1->edge;
-    HalfEdge *remove;
-    do
-    {
-        if (temp->twin->face == f2)
-        {
-            remove = temp;
-            break;
-        }
-        temp = temp->nxt;
-    } while (temp != f1->edge);
-
-    HalfEdge *e1 = remove->twin->prev;
-    HalfEdge *e2 = remove->twin->nxt;
-
-    remove->nxt->prev = e1;
-    e1->nxt = remove->nxt;
-    remove->prev->nxt = e2;
-    e2->prev = remove->prev;
-
-    Face *new_Face = new Face(e1);
-    temp = e1;
-    do
-    {
-        temp->face = new_Face;
-        temp = temp->nxt;
-    } while (temp != e1);
-
-    this->faces.push_back(new_Face);
-
-    return new_Face;
 }
 
 /**
@@ -288,13 +247,8 @@ Face *DCEL::unite(HalfEdge *e)
     e2->nxt = e3;
     e3->prev = e2;
 
-    // e4->face->edge = NULL;
     e2->face->edge = NULL;
 
-    // delete e->twin;
-    // delete e;
-
-    // Face* new_face = new Face(e4);
     auto temp = e4;
     do
     {
@@ -302,7 +256,6 @@ Face *DCEL::unite(HalfEdge *e)
         temp = temp->nxt;
     } while (temp != e4);
 
-    // this->faces.push_back(new_face);
     return e4->face;
 }
 
@@ -319,7 +272,7 @@ void DCEL::print()
     for (Face *f : this->faces)
         if (f->edge != NULL)
         {
-            auto ans = f->enumerate_all_vertices();
+            auto ans = f->enumerateAllVertices();
             std::cout << ans.size() << std::endl;
             for (Vertex *v : ans)
             {

@@ -31,7 +31,7 @@ double angle(Vertex *a, Vertex *b, Vertex *c)
  * @param v This is the first vertex.
  * @return It returns true if at the given vertex is an convex angle else it returns false.
  */
-bool is_convex_angle(Vertex *v)
+bool isConvexAngle(Vertex *v)
 {
     bool ans = true;
     Vertex *prev = v->leave->nxt->org;
@@ -47,7 +47,7 @@ const double inf = (double)INT64_MAX; /*!< For storing the maximum possible valu
  * @param vertices This is a vector of vertices.
  * @return It returns the final rectangle.
  */
-Rectangle get_rectangle(std::vector<Vertex *> &vertices)
+Rectangle getRectangle(std::vector<Vertex *> &vertices)
 {
     Rectangle ans = Rectangle(inf, inf, -inf, -inf);
     for (Vertex *v : vertices)
@@ -68,7 +68,7 @@ Rectangle get_rectangle(std::vector<Vertex *> &vertices)
  * @param rectangle This is the rectangle that we are checking if the vertex is present inside.
  * @return It returns true if vertex is present in the rectangle and false if it doesnt.
  */
-bool is_inside_rectangle(Rectangle &rectangle, Vertex *v)
+bool isInsideRectangle(Rectangle &rectangle, Vertex *v)
 {
     return v->x > rectangle.lx and v->x < rectangle.ux and v->y > rectangle.ly and v->y < rectangle.uy;
 }
@@ -79,7 +79,7 @@ bool is_inside_rectangle(Rectangle &rectangle, Vertex *v)
  * @param polygon This is vector of vertices of the polygon.
  * @return It returns true if vertex is present in the polygon and false if it doesnt.
  */
-bool is_inside_polygon(std::vector<Vertex *> &polygon, Vertex *v)
+bool isInsidePolygon(std::vector<Vertex *> &polygon, Vertex *v)
 {
     int n = polygon.size();
     int i = 0, j = 0;
@@ -130,9 +130,9 @@ bool onSameSide(Vertex *v1, Vertex *v2, Vertex *a, Vertex *b)
  * @param face This is face for which we will want the list of notches.
  * @return It returns a set of vertices which are all the notches present on the face.
  */
-std::set<Vertex *> get_notches(Face *face)
+std::set<Vertex *> getNotches(Face *face)
 {
-    std::vector<Vertex *> vertices = face->enumerate_all_vertices();
+    std::vector<Vertex *> vertices = face->enumerateAllVertices();
     std::set<Vertex *> notches;
 
     int n = vertices.size();

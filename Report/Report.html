@@ -14666,7 +14666,7 @@ td, th {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Algorithm">Algorithm<a class="anchor-link" href="#Algorithm">&#182;</a></h2><h3 id="Decomposition">Decomposition<a class="anchor-link" href="#Decomposition">&#182;</a></h3><p>This takes a polygon stored in DCEL data structure format. It is used to decompose the polygon into convex polygons using the MP1 algorithm. First, we start with the initial vertex of the polygon. We perform the following operations while the size of the polygon is greater than 3 as a polygon with a size 3 or less cannot be decomposed further. L[m] will denote the list L containing the vertices of the convex polygon at the m-th iteration. At a point, we check a few conditions based on angles mentioned in the paper to append the i-th vertex into  L[m] such that it can contain not more than n elements. Then we get all the present notches. We erase all the vertices present in the last list and present in the current notch. Then we make a deque, namely lpvs which has all the current notches after the removal of the vertices. Then we form a rectangle and check for notches present inside this rectangle. Then we check if the notch is present inside the polygon. If it is present inside, we declare a set vtr, and we form a semi-plane using the first vertice and first vertice of lpvs, and then check what all points are on the same side as that of the last element of L[m] and insert into vtr. Then we check through all the vertices of L[m], and if it is present inside vtr then we ignore that. Otherwise, we add that vertice into a new vector called new_l. Then we make L[m] equal to new_l. We repeat the same till the condition of while is satisfied. Then we check for a few conditions on whether to split or not and update n accordingly.<br> Time Complexity of decompostion is $O(n^2logn)$ ,where n is number of points in input.</p>
+<h2 id="Algorithm">Algorithm<a class="anchor-link" href="#Algorithm">&#182;</a></h2><h3 id="Decomposition">Decomposition<a class="anchor-link" href="#Decomposition">&#182;</a></h3><p>This takes a polygon stored in DCEL data structure format. It is used to decompose the polygon into convex polygons using the MP1 algorithm. First, we start with the initial vertex of the polygon. We perform the following operations while the size of the polygon is greater than 3 as a polygon with a size 3 or less cannot be decomposed further. $L[m]$ will denote the list L containing the vertices of the convex polygon at the m-th iteration. At a point, we check a few conditions based on angles mentioned in the paper to append the i-th vertex into  $L[m]$ such that it can contain not more than n elements. Then we get all the present notches (which are the vertices of a polygon displaying a reflex angle). We remove notches that are a part of $L[m]$. Then we make use of a deque, namely $lpvs$ which has all the current notches after the removal of the vertices. Then we form a rectangle of minimum area that encloses all the points of $L[m]$ and check for notches present inside this rectangle. For tyhe notches present in the rectangle, we check if the notch is present inside the polygon. If it is present inside, we form a semi-plane using the first vertex of $L[m]$ and the notch, and then remove all points that are on the same side as the last element of $L[m]$. We repeat the same for all the remaining vertices till there are no more notches present inside the polygon or if the polygon only contains two points(as a polygon should contain at least 3 points). Then we check if the polygon contains at least three points and it is not the entire polygon we split it and update n accordingly.<br> Time Complexity of decompostion is $O(n^2logn)$ ,where n is number of points in input.</p>
 
 </div>
 </div>
@@ -14691,37 +14691,35 @@ First, we defined lle which contains the list of all the diagonals. Then we defi
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<img src="polygon.png" align="right" height="120" width="120"/>
-<h4 id="Initial-Polygon">Initial Polygon<a class="anchor-link" href="#Initial-Polygon">&#182;</a></h4><p>This is the polygon before decomposition.</p>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<img src="decompose.png" align="left" height="120" width="120"/>
-<h4 style="text-align: right;">Decomposed Polygon</h4>
-<div style="text-align: right"> 
-This is the polygon before decomposition.
-</div>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<img src="merge.png" align="right" height="120" width="120"/>
-<h4 id="Merged-Polygon">Merged Polygon<a class="anchor-link" href="#Merged-Polygon">&#182;</a></h4><p>This is the polygon after merging.</p>
+<style>
+td, th {
+   border: none!important;
+}
+table {
+   text-align:center;
+}
+</style>
+<table>
+<thead>
+<tr>
+  <th style="text-align:center">Initial Polygon</th>
+  <th style="text-align:center">Decomposed Polygon</th>
+  <th style="text-align:center">Merged Polygon</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td style="text-align:center"><img src="polygon.png" height="300" width="300"/></td>
+  <td style="text-align:center"><img src="decompose.png" height="300" width="300"/></td>
+  <td style="text-align:center"><img src="merge.png" height="300" width="300"/></td>
+</tr>
+<tr>
+  <td style="text-align:center">This is the polygon before Decomposition.</td>
+  <td style="text-align:center">This is the polygon after Decomposition.</td>
+  <td style="text-align:center">This is the polygon after Merging.</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
@@ -15096,8 +15094,8 @@ Number of notches: 15 <br>
 Number of vertices: 37 <br>
 Number of faces after decomposition: 19 <br>
 Number of faces after merging: 16 <br>
-Time for decomposing is: 0.999 ms <br>
-Time for merging is: 0 ms
+Avg Time for decomposing is: 0.999 ms <br>
+Avg Time for merging is: 0 ms
 
 </div>
 </div>
@@ -15115,8 +15113,8 @@ Number of notches: 46 <br>
 Number of vertices: 98 <br>
 Number of faces after decomposition: 54 <br>
 Number of faces after merging: 41 <br>
-Time for decomposing is: 2.306 ms <br>
-Time for merging is: 0 ms
+Avg Time for decomposing is: 2.306 ms <br>
+Avg Time for merging is: 0 ms
 
 </div>
 </div>
@@ -15134,8 +15132,8 @@ Number of notches: 66 <br>
 Number of vertices: 136 <br>
 Number of faces after decomposition: 75 <br>
 Number of faces after merging: 53 <br>
-Time for decomposing is: 4.508 ms <br>
-Time for merging is: 0.912 ms
+Avg Time for decomposing is: 4.508 ms <br>
+Avg Time for merging is: 0.912 ms
 
 </div>
 </div>
@@ -15153,8 +15151,8 @@ Number of notches: 111 <br>
 Number of vertices: 233 <br>
 Number of faces after decomposition: 112 <br>
 Number of faces after merging: 82 <br>
-Time for decomposing is: 13.549 ms <br>
-Time for merging is: 2.055 ms
+Avg Time for decomposing is: 13.549 ms <br>
+Avg Time for merging is: 2.055 ms
 
 </div>
 </div>
@@ -15172,8 +15170,8 @@ Number of notches: 130 <br>
 Number of vertices: 272 <br>
 Number of faces after decomposition: 144 <br>
 Number of faces after merging: 107 <br>
-Time for decomposing is: 15.01 ms <br>
-Time for merging is: 1.007 ms
+Avg Time for decomposing is: 15.01 ms <br>
+Avg Time for merging is: 1.007 ms
 
 </div>
 </div>
@@ -15191,8 +15189,8 @@ Number of notches: 215 <br>
 Number of vertices: 447 <br>
 Number of faces after decomposition: 256 <br>
 Number of faces after merging: 186 <br>
-Time for decomposing is: 46.874 ms <br>
-Time for merging is: 7.051 ms
+Avg Time for decomposing is: 46.874 ms <br>
+Avg Time for merging is: 7.051 ms
 <br>
 <br>
 
@@ -15213,9 +15211,9 @@ Time for merging is: 7.051 ms
   <th>Vertices</th>
   <th>Notches</th>
   <th>Polygons</th>
-  <th>Dec. time</th>
+  <th>Avg Dec. time</th>
   <th>Merg. poly.</th>
-  <th>Merg. time</th>
+  <th>Avg Merg. time</th>
 </tr>
 </thead>
 <tbody>

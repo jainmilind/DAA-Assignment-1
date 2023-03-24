@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['enumerate_5fall_5fvertices_0',['enumerate_all_vertices',['../class_face.html#a346011a0456b10da2df3a3f99064ad98',1,'Face']]]
+  ['enumerateallvertices_0',['enumerateAllVertices',['../class_face.html#ab4d39aea48b79fc71d239db099d43f20',1,'Face']]]
 ];

@@ -29,10 +29,7 @@ with open('input.txt') as f:
         y_coord_cur = list()
         
         for j in range(n):
-            ## current x coordinate
-            x = -1.0
-            ## current y coordinate
-            y = -1.0
+            ## current x,y coordinate
             x, y = [float(l) for l in next(f).split()]
             x_coord_cur.append(x)
             y_coord_cur.append(y)
