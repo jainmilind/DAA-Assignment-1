@@ -4,7 +4,7 @@ using namespace std;
 typedef uintptr_t usize;
 const int off_set = 200; /*!< This variable stores the offset*/
 
-const int scale = 1; /*!< This is the scale used for the representation */
+const int scale = 10; /*!< This is the scale used for the representation */
 
 /**
  * This is the main function and it colours the polygons for better visual distinction and saves it in an images.svg file so that the output can be viewed.
